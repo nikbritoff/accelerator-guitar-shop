@@ -1,3 +1,8 @@
+export enum AppRoute {
+  Catalog = '/',
+  NotFoud = '/404',
+}
+
 export const RATING_VALUES = [
   1,
   2,
