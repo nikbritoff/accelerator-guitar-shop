@@ -1,11 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { GuitarsList } from '../../mock/mock';
+// import { GuitarsList } from '../../mock/mock';
 import { GuitarsData } from '../../types/state';
 import { loadGuitarsError, loadGuitarsSuccess, requestGuitars } from '../action';
 
 const initialState: GuitarsData = {
-  // guitarsList: [],
-  guitarsList: GuitarsList,
+  guitarsList: [],
   guitarsLoading: false,
   guitarsError: false,
 };

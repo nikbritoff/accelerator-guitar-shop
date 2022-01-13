@@ -7,4 +7,4 @@ export type GuitarsData = {
   guitarsError: boolean,
 };
 
-export type State = RootState
+export type State = RootState;

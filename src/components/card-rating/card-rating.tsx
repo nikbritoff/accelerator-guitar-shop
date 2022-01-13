@@ -15,7 +15,7 @@ function CardRating({rating}: CardRatingProps): JSX.Element {
           height="11"
           aria-hidden="true"
         >
-          <use xlinkHref={item <= rating ? '#icon-full-star' : '#icon-star'}></use>
+          <use xlinkHref={item <= Math.round(rating) ? '#icon-full-star' : '#icon-star'}></use>
         </svg>
       ))}
       <span className="rate__count">9</span>

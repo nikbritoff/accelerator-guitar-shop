@@ -3,6 +3,10 @@ export enum AppRoute {
   NotFoud = '/404',
 }
 
+export enum APIRoute {
+  Guitars = '/guitars',
+}
+
 export const RATING_VALUES = [
   1,
   2,

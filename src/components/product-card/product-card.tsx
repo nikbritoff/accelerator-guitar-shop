@@ -24,9 +24,9 @@ function ProductCard({name, previewImg, rating, price}: ProductCardProps): JSX.E
       />
       <div className="product-card__info">
         <CardRating rating={rating}/>
-        <p className="product-card__title">СURT Z30 Plus Acoustics{name}</p>
+        <p className="product-card__title">{name}</p>
         <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>129 500 999 ₽{price}
+          <span className="visually-hidden">Цена:</span>{price}
         </p>
       </div>
       <div className="product-card__buttons">
