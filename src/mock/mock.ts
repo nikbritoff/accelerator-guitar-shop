@@ -7,7 +7,7 @@ export const GuitarsList = [
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
     'previewImg': 'img/guitar-1.jpg',
     'stringCount': 27,
-    'rating': 2,
+    'rating': 0,
     'price': 10500,
   },
   {

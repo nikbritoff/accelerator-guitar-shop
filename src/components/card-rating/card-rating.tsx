@@ -1,7 +1,10 @@
 import { RATING_VALUES } from '../../const';
 
-function CardRating(): JSX.Element {
-  const RATING = 3;
+type CardRatingProps = {
+  rating: number,
+}
+
+function CardRating({rating}: CardRatingProps): JSX.Element {
   return (
     <div className="rate product-card__rate" aria-hidden="true">
       <span className="visually-hidden">Рейтинг:</span>
@@ -12,7 +15,7 @@ function CardRating(): JSX.Element {
           height="11"
           aria-hidden="true"
         >
-          <use xlinkHref={item <= RATING ? '#icon-full-star' : '#icon-star'}></use>
+          <use xlinkHref={item <= rating ? '#icon-full-star' : '#icon-star'}></use>
         </svg>
       ))}
       <span className="rate__count">9</span>

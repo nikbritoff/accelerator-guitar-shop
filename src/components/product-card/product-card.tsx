@@ -1,19 +1,32 @@
 import CardRating from '../card-rating/card-rating';
 
-function ProductCard(): JSX.Element {
+type ProductCardProps = {
+  'name': string,
+  // 'vendorCode': string,
+  // 'type': string,
+  // 'description': string,
+  'previewImg': string,
+  // 'stringCount': number,
+  'rating': number,
+  'price': number,
+}
+
+function ProductCard({name, previewImg, rating, price}: ProductCardProps): JSX.Element {
   return (
     <div className="product-card">
       <img
-        src="img/content/guitar-2.jpg"
+        // src="img/content/guitar-2.jpg"
+        src={previewImg}
         width="75"
         height="190"
-        alt="СURT Z30 Plus Acoustics"
+        // alt="СURT Z30 Plus Acoustics"
+        alt={name}
       />
       <div className="product-card__info">
-        <CardRating/>
-        <p className="product-card__title">СURT Z30 Plus Acoustics</p>
+        <CardRating rating={rating}/>
+        <p className="product-card__title">СURT Z30 Plus Acoustics{name}</p>
         <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>129 500 999 ₽
+          <span className="visually-hidden">Цена:</span>129 500 999 ₽{price}
         </p>
       </div>
       <div className="product-card__buttons">
