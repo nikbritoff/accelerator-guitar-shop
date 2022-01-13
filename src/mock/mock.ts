@@ -1,7 +1,7 @@
 export const GuitarsList = [
   {
     'id': 1,
-    'name': 'Честер ONE',
+    'name': 'Честер ONE Bass',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -11,7 +11,7 @@ export const GuitarsList = [
     'price': 10500,
   },
   {
-    'id': 2,
+    'id': 26,
     'name': 'Честер TWO',
     'vendorCode': 'SO757575',
     'type': 'electric',
@@ -29,7 +29,7 @@ export const GuitarsList = [
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
     'previewImg': 'img/guitar-3.jpg',
     'stringCount': 7,
-    'rating': 2,
+    'rating': 20,
     'price': 175000,
   },
   {

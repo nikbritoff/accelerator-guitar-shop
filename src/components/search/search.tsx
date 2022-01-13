@@ -1,4 +1,22 @@
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getGuitarsList } from '../../store/guitars/selectors';
+import cn from 'classnames';
+
 function Search(): JSX.Element {
+  const guitarsList = useSelector(getGuitarsList);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [focused, setFocused] = useState(false);
+  const handleFocus = (): void => setFocused(true);
+  const handleBlur = (): void => setFocused(false);
+
+  const [value, setValue] = useState('');
+
+  const filteredGuitars = value.length > 0 ? guitarsList.filter((guitar) => guitar.name.toLowerCase().includes( value.toLowerCase() )) : [];
+  // eslint-disable-next-line no-console
+  console.log(filteredGuitars);
+
   return (
     <div className="form-search">
       <form className="form-search__form">
@@ -7,16 +25,37 @@ function Search(): JSX.Element {
             <use xlinkHref="#icon-search"></use>
           </svg><span className="visually-hidden">Начать поиск</span>
         </button>
-        <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"/>
+        <input
+          className="form-search__input"
+          id="search"
+          type="text"
+          autoComplete="off"
+          placeholder="что вы ищите?"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={(evt) => {
+            setValue(evt.target.value);
+            // eslint-disable-next-line no-console
+            console.log(filteredGuitars.length);
+          }}
+        />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className="form-search__select-list ">
-        <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
+      <ul className={cn(
+        'form-search__select-list',
+        // {'hidden' : !focused},
+        {'hidden' : !focused},
+      )}
+      >
+        {filteredGuitars.map((guitar) => (
+          <li
+            key={guitar.name}
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            {guitar.name}
+          </li>
+        ))}
       </ul>
     </div>
   );
