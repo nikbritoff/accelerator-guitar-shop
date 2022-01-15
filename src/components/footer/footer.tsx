@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
 function Footer(): JSX.Element {
   return (
     <footer className="footer">
       <div className="footer__container container">
-        <a className="footer__logo logo" href="/#">
+        <Link className="footer__logo logo" to="/">
           <img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип"/>
-        </a>
+        </Link>
         <div className="socials footer__socials">
           <ul className="socials__list">
             <li className="socials-item">
@@ -37,15 +40,20 @@ function Footer(): JSX.Element {
         <section className="footer__nav-section footer__nav-section--links">
           <h2 className="footer__nav-title">Информация</h2>
           <ul className="footer__nav-list">
-            <li className="footer__nav-list-item"><a className="link" href="#top">Где купить?</a>
+            <li className="footer__nav-list-item">
+              <Link className="link" to={AppRoute.NotFoud}>Где купить?</Link>
             </li>
-            <li className="footer__nav-list-item"><a className="link" href="#top">Блог</a>
+            <li className="footer__nav-list-item">
+              <Link className="link" to={AppRoute.NotFoud}>Блог</Link>
             </li>
-            <li className="footer__nav-list-item"><a className="link" href="#top">Вопрос - ответ</a>
+            <li className="footer__nav-list-item">
+              <Link className="link" to={AppRoute.NotFoud}>Вопрос - ответ</Link>
             </li>
-            <li className="footer__nav-list-item"><a className="link" href="#top">Возврат</a>
+            <li className="footer__nav-list-item">
+              <Link className="link" to={AppRoute.NotFoud}>Возврат</Link>
             </li>
-            <li className="footer__nav-list-item"><a className="link" href="#top">Сервис-центры</a>
+            <li className="footer__nav-list-item">
+              <Link className="link" to={AppRoute.NotFoud}>Сервис-центры</Link>
             </li>
           </ul>
         </section>
