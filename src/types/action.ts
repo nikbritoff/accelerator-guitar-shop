@@ -4,6 +4,7 @@ import { State } from './state';
 import { Action } from 'redux';
 
 export enum ActionType {
+  ChangeScreen = 'app/changeScreen',
   RequestGuitars = 'guitars/request',
   LoadGuitarsSuccess = 'guitars/loadSuccess',
   LoadGuitarsError = 'guitars/loadError',

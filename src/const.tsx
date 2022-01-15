@@ -7,10 +7,16 @@ export enum APIRoute {
   Guitars = '/guitars',
 }
 
-export const RATING_VALUES = [
+export const ratingValues = [
   1,
   2,
   3,
   4,
   5,
 ];
+
+export enum Screen {
+  Catalog  = 'Каталог',
+  WhereBuy = 'Где купить?',
+  About = 'О компании',
+}

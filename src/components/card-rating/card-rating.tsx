@@ -1,4 +1,4 @@
-import { RATING_VALUES } from '../../const';
+import { ratingValues } from '../../const';
 
 type CardRatingProps = {
   rating: number,
@@ -8,7 +8,7 @@ function CardRating({rating}: CardRatingProps): JSX.Element {
   return (
     <div className="rate product-card__rate" aria-hidden="true">
       <span className="visually-hidden">Рейтинг:</span>
-      {RATING_VALUES.map((item) => (
+      {ratingValues.map((item) => (
         <svg
           key={item}
           width="12"

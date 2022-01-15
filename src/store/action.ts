@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { Screen } from '../const';
 import { ActionType } from '../types/action';
 import { Guitar } from '../types/guitar';
 
@@ -12,3 +13,10 @@ export const loadGuitarsSuccess = createAction(
 );
 
 export const loadGuitarsError = createAction(ActionType.LoadGuitarsError);
+
+export const changeScreen = createAction(
+  ActionType.ChangeScreen,
+  (screen: Screen) => ({
+    payload: screen,
+  }),
+);
