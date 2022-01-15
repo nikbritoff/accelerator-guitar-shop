@@ -8,8 +8,6 @@ export const fetchGuitarsAction = (): ThunkActionResult => (
       dispatch(requestGuitars());
       const { data } = await api.get(APIRoute.Guitars);
       dispatch(loadGuitarsSuccess(data));
-      // eslint-disable-next-line no-console
-      console.log(data);
     }
     catch {
       dispatch(loadGuitarsError());
