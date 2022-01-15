@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getGuitarsList } from '../../store/guitars/selectors';
+import styles from './search.module.css';
 import cn from 'classnames';
 
 function Search(): JSX.Element {
   const guitarsList = useSelector(getGuitarsList);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [focused, setFocused] = useState(false);
   const handleFocus = (): void => setFocused(true);
   const handleBlur = (): void => setFocused(false);
@@ -14,8 +14,6 @@ function Search(): JSX.Element {
   const [value, setValue] = useState('');
 
   const filteredGuitars = value.length > 0 ? guitarsList.filter((guitar) => guitar.name.toLowerCase().includes( value.toLowerCase() )) : [];
-  // eslint-disable-next-line no-console
-  console.log(filteredGuitars);
 
   return (
     <div className="form-search">
@@ -35,15 +33,13 @@ function Search(): JSX.Element {
           onBlur={handleBlur}
           onChange={(evt) => {
             setValue(evt.target.value);
-            // eslint-disable-next-line no-console
-            console.log(filteredGuitars.length);
           }}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
       <ul className={cn(
         'form-search__select-list',
-        // {'hidden' : !focused},
+        styles['result-list'],
         {'hidden' : !focused},
       )}
       >
