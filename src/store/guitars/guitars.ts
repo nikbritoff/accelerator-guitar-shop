@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-// import { GuitarsList } from '../../mock/mock';
 import { GuitarsData } from '../../types/state';
-import { loadGuitarsError, loadGuitarsSuccess, requestGuitars } from '../action';
+import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, requestGuitars } from '../action';
 
 const initialState: GuitarsData = {
   guitarsList: [],
   guitarsLoading: false,
   guitarsError: false,
+  guitarsAmount: 0,
 };
 
 const guitars = createReducer(initialState, (builder) => {
@@ -22,6 +22,9 @@ const guitars = createReducer(initialState, (builder) => {
     .addCase(loadGuitarsError, (state) => {
       state.guitarsLoading = false;
       state.guitarsError = true;
+    })
+    .addCase(changeGuitarsAmount, (state, action) => {
+      state.guitarsAmount = action.payload;
     });
 });
 

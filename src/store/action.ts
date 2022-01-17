@@ -14,6 +14,13 @@ export const loadGuitarsSuccess = createAction(
 
 export const loadGuitarsError = createAction(ActionType.LoadGuitarsError);
 
+export const changeGuitarsAmount = createAction(
+  ActionType.ChangeGuitarsAmount,
+  (amount: number) => ({
+    payload: amount,
+  }),
+);
+
 export const changeScreen = createAction(
   ActionType.ChangeScreen,
   (screen: Screen) => ({

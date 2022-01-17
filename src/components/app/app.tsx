@@ -9,7 +9,7 @@ function App(): JSX.Element {
     <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Catalog}>
-          <Catalog/>
+          <Catalog history={browserHistory}/>
         </Route>
         <Route>
           <NotFound/>

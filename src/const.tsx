@@ -1,5 +1,5 @@
 export enum AppRoute {
-  Catalog = '/',
+  Catalog = '/catalog',
   NotFoud = '/404',
 }
 
@@ -20,3 +20,5 @@ export enum Screen {
   WhereBuy = 'Где купить?',
   About = 'О компании',
 }
+
+export const CATALOG_GUITARS_LIMIT = 9;

@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
+import { CATALOG_GUITARS_LIMIT } from './const';
 import { createAPI } from './services/api';
 import { fetchGuitarsAction } from './store/api-actions';
 import { rootReducer } from './store/root-reducer';
@@ -19,7 +20,7 @@ const store = configureStore({
     }),
 });
 
-(store.dispatch)(fetchGuitarsAction());
+(store.dispatch)(fetchGuitarsAction(0, CATALOG_GUITARS_LIMIT));
 
 ReactDOM.render(
   <React.StrictMode>
