@@ -6,6 +6,7 @@ export type GuitarsData = {
   guitarsLoading: boolean,
   guitarsError: boolean,
   guitarsAmount: number,
+  searchResults: Guitar[],
 };
 
 export type State = RootState;

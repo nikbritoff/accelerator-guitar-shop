@@ -6,3 +6,4 @@ export const getGuitarsList = (state: State): Guitar[] => state[NameSpace.Guitar
 export const getGuitarsLoading = (state: State): boolean => state[NameSpace.Guitars].guitarsLoading;
 export const getGuitarsError = (state: State): boolean => state[NameSpace.Guitars].guitarsError;
 export const getGuitarsAmount = (state: State): number => state[NameSpace.Guitars].guitarsAmount;
+export const getSearchResults = (state: State): Guitar[] => state[NameSpace.Guitars].searchResults;

@@ -1,6 +1,6 @@
 import { APIRoute } from '../const';
 import { ThunkActionResult } from '../types/action';
-import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, requestGuitars } from './action';
+import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadSearchResultsSuccess, requestGuitars } from './action';
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
   async (dispatch, _, api) => {
@@ -13,5 +13,14 @@ export const fetchGuitarsAction = (start: number, limit: number): ThunkActionRes
     catch {
       dispatch(loadGuitarsError());
     }
+  }
+);
+
+// export const fetchSearchResults = (start: number, limit: number, value: string): ThunkActionResult => (
+export const fetchSearchResults = (value: string): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    // const { data } = await api.get(`${APIRoute.Guitars}?_start=${start}&_limit=${limit}&name_like=${value}`);
+    const { data } = await api.get(`${APIRoute.Guitars}?name_like=${value}`);
+    dispatch(loadSearchResultsSuccess(data));
   }
 );
