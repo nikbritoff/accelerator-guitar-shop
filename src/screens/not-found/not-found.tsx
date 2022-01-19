@@ -1,15 +1,20 @@
+import { History } from 'history';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
 import styles from './not-found.module.css';
 
-function NotFound(): JSX.Element {
+type NotFoundProps = {
+  history: History,
+}
+
+function NotFound({history}: NotFoundProps): JSX.Element {
   return (
     <>
       <IconsList/>
       <div className="wrapper">
-        <Header/>
+        <Header history={history}/>
         <main className="page-content">
           <div className="container">
             <section className={styles['not-found']}>

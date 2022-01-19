@@ -5,8 +5,13 @@ import { getCurrentScreen } from '../../store/app-state/selectors';
 import Search from '../search/search';
 import cn from 'classnames';
 import { changeScreen } from '../../store/action';
+import { History } from 'history';
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  history: History,
+}
+
+function Header({history} : HeaderProps): JSX.Element {
   const dispatch = useDispatch();
   const currentScreen = useSelector(getCurrentScreen);
 
@@ -60,7 +65,7 @@ function Header(): JSX.Element {
             </li>
           </ul>
         </nav>
-        <Search/>
+        <Search history={history}/>
         <Link className="header__cart-link" to={AppRoute.NotFoud} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>

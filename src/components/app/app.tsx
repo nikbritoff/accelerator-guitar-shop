@@ -12,7 +12,7 @@ function App(): JSX.Element {
           <Catalog history={browserHistory}/>
         </Route>
         <Route>
-          <NotFound/>
+          <NotFound history={browserHistory}/>
         </Route>
       </Switch>
     </BrowserRouter>

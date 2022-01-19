@@ -3,10 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSearchResults } from '../../store/guitars/selectors';
 import styles from './search.module.css';
 import cn from 'classnames';
-import { fetchSearchResults } from '../../store/api-actions';
-// import { loadGuitarsSuccess, changeGuitarsAmount } from '../../store/action';
+import { fetcDataAction, fetchSearchResults } from '../../store/api-actions';
+import { History } from 'history';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { createApiURL } from '../../utils/api';
 
-function Search(): JSX.Element {
+type SearchProps = {
+  history: History,
+}
+
+function Search({history}: SearchProps): JSX.Element {
   const dispatch = useDispatch();
   const searchResults = useSelector(getSearchResults);
 
@@ -14,16 +21,33 @@ function Search(): JSX.Element {
   const handleFocus = (): void => setFocused(true);
   const handleBlur = (): void => setFocused(false);
 
-  const [value, setValue] = useState('');
-
   const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setValue(evt.target.value);
+    setValue(evt.target.value.trim());
   };
+
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const name  = queryString.parse(search).name ? String(queryString.parse(search).name) : '';
+  const [value, setValue] = useState(name);
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    // dispatch(loadGuitarsSuccess(searchResults));
-    // dispatch(changeGuitarsAmount(searchResults.length));
+    queryParams.delete('name');
+    queryParams.delete('page');
+    queryParams.append('page', String(1));
+
+    if (value === '') {
+      queryParams.delete('name');
+    } else {
+      queryParams.append('name', value);
+    }
+
+    history.replace({
+      search: queryParams.toString(),
+    });
+
+    const url = createApiURL(queryParams.toString(), 1);
+    dispatch(fetcDataAction(url));
   };
 
   useEffect(() => {
@@ -31,7 +55,9 @@ function Search(): JSX.Element {
   }, [dispatch, value]);
 
   return (
-    <div className="form-search">
+    <div className="form-search"
+      onFocus={handleFocus}
+    >
       <form
         className="form-search__form"
         onSubmit={handleFormSubmit}
@@ -49,7 +75,6 @@ function Search(): JSX.Element {
           placeholder="что вы ищите?"
           value={value}
           onFocus={handleFocus}
-          onBlur={handleBlur}
           onChange={handleChange}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
@@ -65,6 +90,11 @@ function Search(): JSX.Element {
             key={guitar.name}
             className="form-search__select-item"
             tabIndex={0}
+            onMouseOver={handleFocus}
+            onBlur={handleBlur}
+            onClick={() => {
+              setValue(guitar.name);
+            }}
           >
             {guitar.name}
           </li>

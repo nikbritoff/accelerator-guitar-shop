@@ -9,19 +9,25 @@ import Loading from '../../components/icons-list/loading/loading';
 import LoadingError from '../../components/loading-error/loading-error';
 import Pagination from '../../components/pagination/pagination';
 import Sorting from '../../components/sorting/sorting';
-import { AppRoute, CATALOG_GUITARS_LIMIT } from '../../const';
+import { AppRoute } from '../../const';
 import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/guitars/selectors';
 import queryString from 'query-string';
 import { History } from 'history';
-import { fetchGuitarsAction } from '../../store/api-actions';
+import { fetcDataAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { createApiURL } from '../../utils/api';
 
-function ErrorPage({children}: {children: React.ReactNode}) {
+type ErrorPageProps = {
+  history: History,
+  children: React.ReactNode
+}
+
+function ErrorPage({history, children}: ErrorPageProps) {
   return (
     <>
       <IconsList/>
       <div className="wrapper">
-        <Header/>
+        <Header history={history}/>
         <main className="page-content">
           <div className="container">
             {children}
@@ -45,23 +51,22 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
 
   const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
   let { page } = queryString.parse(search);
+  const url = createApiURL(queryParams.toString(), Number(page));
 
   if (!page) {
     page = '1';
     history.push(`/catalog?page=${page}`);
   }
 
-  const start = Number(page) * CATALOG_GUITARS_LIMIT - CATALOG_GUITARS_LIMIT;
-
   useEffect(() => {
-    dispatch(fetchGuitarsAction(start, CATALOG_GUITARS_LIMIT));
-  }, [dispatch, start]);
-
+    dispatch(fetcDataAction(url));
+  }, [dispatch, url]);
 
   if (guitarsError) {
     return (
-      <ErrorPage>
+      <ErrorPage history={history}>
         <LoadingError/>
       </ErrorPage>
     );
@@ -69,7 +74,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
   if (guitarsLoading) {
     return (
-      <ErrorPage>
+      <ErrorPage history={history}>
         <Loading/>
       </ErrorPage>
     );
@@ -79,7 +84,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
     <>
       <IconsList/>
       <div className="wrapper">
-        <Header/>
+        <Header history={history}/>
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
@@ -96,6 +101,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
               <Sorting/>
               <CardsList guitarsList={guitarsList}/>
               <Pagination currentPage={Number(page)}/>
+              {/* <Pagination/> */}
             </div>
           </div>
         </main>

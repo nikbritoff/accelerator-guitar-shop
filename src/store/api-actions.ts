@@ -16,10 +16,23 @@ export const fetchGuitarsAction = (start: number, limit: number): ThunkActionRes
   }
 );
 
-// export const fetchSearchResults = (start: number, limit: number, value: string): ThunkActionResult => (
+export const fetcDataAction = (url: string): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    try {
+      dispatch(requestGuitars());
+      const { data, headers } = await api.get(url);
+      dispatch(loadGuitarsSuccess(data));
+      // dispatch(changeGuitarsAmount(Number(data.length)));
+      dispatch(changeGuitarsAmount(Number(headers['x-total-count'])));
+    }
+    catch {
+      dispatch(loadGuitarsError());
+    }
+  }
+);
+
 export const fetchSearchResults = (value: string): ThunkActionResult => (
   async (dispatch, _, api) => {
-    // const { data } = await api.get(`${APIRoute.Guitars}?_start=${start}&_limit=${limit}&name_like=${value}`);
     const { data } = await api.get(`${APIRoute.Guitars}?name_like=${value}`);
     dispatch(loadSearchResultsSuccess(data));
   }
