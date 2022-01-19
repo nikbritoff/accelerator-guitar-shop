@@ -52,12 +52,11 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  let { page } = queryString.parse(search);
+  const { page } = queryString.parse(search);
   const url = createApiURL(queryParams.toString(), Number(page));
 
   if (!page) {
-    page = '1';
-    history.push(`/catalog?page=${page}`);
+    history.push(`/catalog?page=${1}`);
   }
 
   useEffect(() => {
@@ -101,7 +100,6 @@ function Catalog({history} : CatalogProps): JSX.Element {
               <Sorting/>
               <CardsList guitarsList={guitarsList}/>
               <Pagination currentPage={Number(page)}/>
-              {/* <Pagination/> */}
             </div>
           </div>
         </main>

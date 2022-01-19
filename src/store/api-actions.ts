@@ -22,7 +22,6 @@ export const fetcDataAction = (url: string): ThunkActionResult => (
       dispatch(requestGuitars());
       const { data, headers } = await api.get(url);
       dispatch(loadGuitarsSuccess(data));
-      // dispatch(changeGuitarsAmount(Number(data.length)));
       dispatch(changeGuitarsAmount(Number(headers['x-total-count'])));
     }
     catch {
