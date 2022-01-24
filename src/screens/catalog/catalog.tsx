@@ -55,6 +55,10 @@ function Catalog({history} : CatalogProps): JSX.Element {
   const { page } = queryString.parse(search);
   const url = createApiURL(queryParams.toString(), Number(page));
 
+  // const [sortingOrder, setSortingOrder] = useState<null | SortingOrder>(null);
+  // const [sortingType, setSortingType]
+
+
   if (!page) {
     history.push(`/catalog?page=${1}`);
   }
@@ -67,14 +71,6 @@ function Catalog({history} : CatalogProps): JSX.Element {
     return (
       <ErrorPage history={history}>
         <LoadingError/>
-      </ErrorPage>
-    );
-  }
-
-  if (guitarsLoading) {
-    return (
-      <ErrorPage history={history}>
-        <Loading/>
       </ErrorPage>
     );
   }
@@ -96,9 +92,11 @@ function Catalog({history} : CatalogProps): JSX.Element {
               </li>
             </ul>
             <div className="catalog">
-              <Filter/>
-              <Sorting/>
-              <CardsList guitarsList={guitarsList}/>
+              <Filter history={history}/>
+              {/* <Sorting sortingOrder={sortingOrder} setSortingOrder={setSortingOrder}/> */}
+              <Sorting history={history}/>
+              {!guitarsLoading && <CardsList guitarsList={guitarsList}/>}
+              {guitarsLoading && <Loading/>}
               <Pagination currentPage={Number(page)}/>
             </div>
           </div>

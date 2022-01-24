@@ -1,4 +1,4 @@
-import { APIRoute } from '../const';
+import { APIRoute, queryParamName } from '../const';
 import { ThunkActionResult } from '../types/action';
 import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadSearchResultsSuccess, requestGuitars } from './action';
 
@@ -32,7 +32,7 @@ export const fetcDataAction = (url: string): ThunkActionResult => (
 
 export const fetchSearchResults = (value: string): ThunkActionResult => (
   async (dispatch, _, api) => {
-    const { data } = await api.get(`${APIRoute.Guitars}?name_like=${value}`);
+    const { data } = await api.get(`${APIRoute.Guitars}?${queryParamName.NameLike}=${value}`);
     dispatch(loadSearchResultsSuccess(data));
   }
 );

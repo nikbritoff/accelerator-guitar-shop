@@ -8,6 +8,7 @@ import { History } from 'history';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { createApiURL } from '../../utils/api';
+import { queryParamName } from '../../const';
 
 type SearchProps = {
   history: History,
@@ -32,14 +33,13 @@ function Search({history}: SearchProps): JSX.Element {
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    queryParams.delete('name');
-    queryParams.delete('page');
-    queryParams.append('page', String(1));
+    queryParams.delete(queryParamName.Name);
+    queryParams.set(queryParamName.Page, String(1));
 
     if (value === '') {
-      queryParams.delete('name');
+      queryParams.delete(queryParamName.Name);
     } else {
-      queryParams.append('name', value);
+      queryParams.set(queryParamName.Name, value);
     }
 
     history.replace({

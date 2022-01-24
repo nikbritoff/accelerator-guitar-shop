@@ -1,4 +1,58 @@
-function Filter(): JSX.Element {
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { createApiURL } from '../../utils/api';
+import queryString from 'query-string';
+import { useDispatch } from 'react-redux';
+import { fetcDataAction } from '../../store/api-actions';
+import { History } from 'history';
+import { queryParamName } from '../../const';
+
+type FilterProps = {
+  history: History;
+}
+
+function Filter({ history }: FilterProps): JSX.Element {
+  const dispatch = useDispatch();
+
+  const { search } = useLocation();
+  const queryParams = useMemo(() => new URLSearchParams(search), [search]);
+  const queryMinPrice = queryString.parse(search).price_gte ? String(queryString.parse(search).price_gte) : '';
+  const queryMaxPrice = queryString.parse(search).price_lte ? String(queryString.parse(search).price_lte) : '';
+
+  const [minPrice, setMinPrice] = useState(queryMinPrice);
+  const [maxPrice, setMaxPrice] = useState(queryMaxPrice);
+
+  const handleMinPriceInput = (evt: ChangeEvent<HTMLInputElement>): void => {
+    setMinPrice(evt.target.value.trim());
+
+    queryParams.delete(queryParamName.MinPrice);
+
+    if (evt.target.value.trim() !== '') {
+      queryParams.set(queryParamName.MinPrice, evt.target.value.trim());
+    }
+  };
+
+  const handleMaxPriceInput = (evt: ChangeEvent<HTMLInputElement>): void => {
+    setMaxPrice(evt.target.value.trim());
+
+    queryParams.delete(queryParamName.MaxPrice);
+
+    if (evt.target.value.trim() !== '') {
+      queryParams.set(queryParamName.MaxPrice, evt.target.value.trim());
+    }
+  };
+
+  useEffect(() => {
+    history.replace({
+      search: queryParams.toString(),
+    });
+
+    const page = queryString.parse(search).page;
+
+    const url = createApiURL(queryParams.toString(), Number(page));
+    dispatch(fetcDataAction(url));
+  }, [dispatch, history, minPrice, maxPrice, queryParams, search]);
+
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
@@ -7,11 +61,25 @@ function Filter(): JSX.Element {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder="1 000" id="priceMin" name="от"/>
+            <input
+              type="number"
+              placeholder="1 000"
+              id="priceMin"
+              name="от"
+              value={minPrice}
+              onInput={handleMinPriceInput}
+            />
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder="30 000" id="priceMax" name="до"/>
+            <input
+              type="number"
+              placeholder="30 000"
+              id="priceMax"
+              name="до"
+              value={maxPrice}
+              onInput={handleMaxPriceInput}
+            />
           </div>
         </div>
       </fieldset>

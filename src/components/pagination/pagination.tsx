@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import cn from 'classnames';
-import { AppRoute } from '../../const';
+import { AppRoute, queryParamName } from '../../const';
 import { useSelector } from 'react-redux';
 import { getGuitarsAmount } from '../../store/guitars/selectors';
 import { getPagesAmount, getPagesList } from '../../utils/pagination';
@@ -26,7 +26,7 @@ function Pagination({currentPage}: PaginationProps): JSX.Element {
           <li className="pagination__page pagination__page--prev" id="next">
             <Link
               className="link pagination__page-link"
-              to={`${AppRoute.Catalog}?page=${currentPage - 1}${queryParams.toString().length > 0 ? `&${queryParams.toString()}` : ''}`}
+              to={`${AppRoute.Catalog}?${queryParamName.Page}=${currentPage - 1}${queryParams.toString().length > 0 ? `&${queryParams.toString()}` : ''}`}
             >
               Назад
             </Link>
@@ -41,7 +41,7 @@ function Pagination({currentPage}: PaginationProps): JSX.Element {
           >
             <Link
               className="link pagination__page-link"
-              to={`${AppRoute.Catalog}?page=${String(page)}${queryParams.toString().trim().length > 0 ? `&${queryParams.toString()}` : ''}`}
+              to={`${AppRoute.Catalog}?${queryParamName.Page}=${String(page)}${queryParams.toString().trim().length > 0 ? `&${queryParams.toString()}` : ''}`}
             >
               {page}
             </Link>
@@ -51,7 +51,7 @@ function Pagination({currentPage}: PaginationProps): JSX.Element {
         <li className="pagination__page pagination__page--next" id="next">
           <Link
             className="link pagination__page-link"
-            to={`${AppRoute.Catalog}?page=${currentPage + 1}${queryParams.toString().length > 0 ? `&${queryParams.toString()}` : ''}`}
+            to={`${AppRoute.Catalog}?${queryParamName.Page}=${currentPage + 1}${queryParams.toString().length > 0 ? `&${queryParams.toString()}` : ''}`}
           >
             Далее
           </Link>
