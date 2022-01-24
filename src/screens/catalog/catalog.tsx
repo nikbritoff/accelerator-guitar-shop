@@ -55,10 +55,6 @@ function Catalog({history} : CatalogProps): JSX.Element {
   const { page } = queryString.parse(search);
   const url = createApiURL(queryParams.toString(), Number(page));
 
-  // const [sortingOrder, setSortingOrder] = useState<null | SortingOrder>(null);
-  // const [sortingType, setSortingType]
-
-
   if (!page) {
     history.push(`/catalog?page=${1}`);
   }
