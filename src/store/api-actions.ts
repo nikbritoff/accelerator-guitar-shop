@@ -1,4 +1,4 @@
-import { APIRoute, queryParamName } from '../const';
+import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import { ThunkActionResult } from '../types/action';
 import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadSearchResultsSuccess, requestGuitars } from './action';
 
@@ -6,9 +6,9 @@ export const fetchGuitarsAction = (start: number, limit: number): ThunkActionRes
   async (dispatch, _, api) => {
     try {
       dispatch(requestGuitars());
-      const { data, headers } = await api.get(`${APIRoute.Guitars}?_start=${start}&_limit=${limit}`);
+      const { data, headers } = await api.get(`${APIRoute.Guitars}?${queryParamName.Start}=${start}&${queryParamName.Limit}=${limit}`);
       dispatch(loadGuitarsSuccess(data));
-      dispatch(changeGuitarsAmount(Number(headers['x-total-count'])));
+      dispatch(changeGuitarsAmount(Number(headers[COUNT_TOKEN_NAME])));
     }
     catch {
       dispatch(loadGuitarsError());
@@ -22,7 +22,7 @@ export const fetcDataAction = (url: string): ThunkActionResult => (
       dispatch(requestGuitars());
       const { data, headers } = await api.get(url);
       dispatch(loadGuitarsSuccess(data));
-      dispatch(changeGuitarsAmount(Number(headers['x-total-count'])));
+      dispatch(changeGuitarsAmount(Number(headers[COUNT_TOKEN_NAME])));
     }
     catch {
       dispatch(loadGuitarsError());

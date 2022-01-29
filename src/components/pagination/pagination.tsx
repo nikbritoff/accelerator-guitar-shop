@@ -17,7 +17,7 @@ function Pagination({currentPage}: PaginationProps): JSX.Element {
 
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  queryParams.delete('page');
+  queryParams.delete(queryParamName.Page);
 
   return (
     <div className="pagination page-content__pagination">

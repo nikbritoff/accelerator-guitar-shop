@@ -5,7 +5,9 @@ import queryString from 'query-string';
 import { useDispatch } from 'react-redux';
 import { fetcDataAction } from '../../store/api-actions';
 import { History } from 'history';
-import { queryParamName } from '../../const';
+import { CatalogSettings, GUITARS, queryParamName } from '../../const';
+import { getAvailableStrings } from '../../utils/filter';
+// import { GuitarFilterInfo } from '../../types/guitar-filter-info';
 
 type FilterProps = {
   history: History;
@@ -13,19 +15,27 @@ type FilterProps = {
 
 function Filter({ history }: FilterProps): JSX.Element {
   const dispatch = useDispatch();
+  const totalStrings = getAvailableStrings(GUITARS);
 
   const { search } = useLocation();
   const queryParams = useMemo(() => new URLSearchParams(search), [search]);
-  const queryMinPrice = queryString.parse(search).price_gte ? String(queryString.parse(search).price_gte) : '';
-  const queryMaxPrice = queryString.parse(search).price_lte ? String(queryString.parse(search).price_lte) : '';
+
+  const queryMinPrice = queryString.parse(search)[queryParamName.MinPrice] ? String(queryString.parse(search)[queryParamName.MinPrice]) : '';
+  const queryMaxPrice = queryString.parse(search)[queryParamName.MaxPrice] ? String(queryString.parse(search)[queryParamName.MaxPrice]) : '';
+  const queryType = queryString.parse(search)[queryParamName.Type] ? String(queryString.parse(search)[queryParamName.Type]).split(',') : [];
 
   const [minPrice, setMinPrice] = useState(queryMinPrice);
   const [maxPrice, setMaxPrice] = useState(queryMaxPrice);
+  const [guitarTypes, setSelectedTypes] = useState<string[]>(queryType);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [availableStrings, setAvailableStrings] = useState(totalStrings);
+
 
   const handleMinPriceInput = (evt: ChangeEvent<HTMLInputElement>): void => {
     setMinPrice(evt.target.value.trim());
 
     queryParams.delete(queryParamName.MinPrice);
+    queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
 
     if (evt.target.value.trim() !== '') {
       queryParams.set(queryParamName.MinPrice, evt.target.value.trim());
@@ -36,13 +46,41 @@ function Filter({ history }: FilterProps): JSX.Element {
     setMaxPrice(evt.target.value.trim());
 
     queryParams.delete(queryParamName.MaxPrice);
+    queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
 
     if (evt.target.value.trim() !== '') {
       queryParams.set(queryParamName.MaxPrice, evt.target.value.trim());
     }
   };
 
+
+  const handleTypeInputChange = (type: string): void => {
+    const index = guitarTypes.findIndex((selected) => selected === type);
+
+    if (index === -1) {
+      setSelectedTypes([...guitarTypes, type]);
+    } else {
+      setSelectedTypes([...guitarTypes.slice(0, index), ...guitarTypes.slice(index + 1)]);
+    }
+
+    queryParams.delete(queryParamName.Type);
+    guitarTypes.forEach((currentType) => queryParams.append(queryParamName.Type, currentType));
+
+    // if (guitarTypes.length === 0) {
+    //   const strings = getAvailableStrings(GUITARS);
+    //   setAvailableStrings([...strings]);
+    // }
+  };
+
+  // useEffect(() => {
+  //   if (guitarTypes.length > 0) {
+  //     const strings = getAvailableStrings(guitarTypes);
+  //     setAvailableStrings([...strings]);
+  //   }}, [guitarTypes]);
+
   useEffect(() => {
+    queryParams.delete(queryParamName.Type);
+    guitarTypes.forEach((currentType) => queryParams.append(queryParamName.Type, currentType));
     history.replace({
       search: queryParams.toString(),
     });
@@ -51,7 +89,7 @@ function Filter({ history }: FilterProps): JSX.Element {
 
     const url = createApiURL(queryParams.toString(), Number(page));
     dispatch(fetcDataAction(url));
-  }, [dispatch, history, minPrice, maxPrice, queryParams, search]);
+  }, [dispatch, history, minPrice, maxPrice, queryParams, search, guitarTypes, availableStrings]);
 
   return (
     <form className="catalog-filter">
@@ -85,37 +123,48 @@ function Filter({ history }: FilterProps): JSX.Element {
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic"/>
-          <label htmlFor="acoustic">Акустические гитары</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric" checked/>
-          <label htmlFor="electric">Электрогитары</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" checked/>
-          <label htmlFor="ukulele">Укулеле</label>
-        </div>
+        {GUITARS.map((guitar) => (
+          <div
+            key={guitar.type}
+            className="form-checkbox catalog-filter__block-item"
+          >
+            <input
+              className="visually-hidden"
+              type="checkbox"
+              id={guitar.type}
+              name={guitar.type}
+              onChange={(evt)=> handleTypeInputChange(guitar.type)}
+              checked={guitarTypes.includes(guitar.type)}
+            />
+            <label
+              htmlFor={guitar.type}
+            >
+              {guitar.name}
+            </label>
+          </div>
+        ))}
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="4-strings" name="4-strings" checked/>
-          <label htmlFor="4-strings">4</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="6-strings" name="6-strings" checked/>
-          <label htmlFor="6-strings">6</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="7-strings" name="7-strings"/>
-          <label htmlFor="7-strings">7</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="12-strings" name="12-strings" disabled/>
-          <label htmlFor="12-strings">12</label>
-        </div>
+        {totalStrings.map((count) => (
+          <div
+            key={count}
+            className="form-checkbox catalog-filter__block-item"
+          >
+            <input
+              className="visually-hidden"
+              type="checkbox"
+              id={`${count}-strings`}
+              name={`${count}-strings`}
+              disabled={!availableStrings.includes(count)}
+            />
+            <label
+              htmlFor={`${count}-strings`}
+            >
+              {count}
+            </label>
+          </div>
+        ))}
       </fieldset>
     </form>
   );

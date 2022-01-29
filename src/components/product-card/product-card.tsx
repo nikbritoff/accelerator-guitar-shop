@@ -2,11 +2,7 @@ import CardRating from '../card-rating/card-rating';
 
 type ProductCardProps = {
   'name': string,
-  // 'vendorCode': string,
-  // 'type': string,
-  // 'description': string,
   'previewImg': string,
-  // 'stringCount': number,
   'rating': number,
   'price': number,
 }
@@ -15,11 +11,9 @@ function ProductCard({name, previewImg, rating, price}: ProductCardProps): JSX.E
   return (
     <div className="product-card">
       <img
-        // src="img/content/guitar-2.jpg"
         src={previewImg}
         width="75"
         height="190"
-        // alt="СURT Z30 Plus Acoustics"
         alt={name}
       />
       <div className="product-card__info">

@@ -35,6 +35,7 @@ function Search({history}: SearchProps): JSX.Element {
     evt.preventDefault();
     queryParams.delete(queryParamName.Name);
     queryParams.set(queryParamName.Page, String(1));
+    setFocused(false);
 
     if (value === '') {
       queryParams.delete(queryParamName.Name);
@@ -57,6 +58,7 @@ function Search({history}: SearchProps): JSX.Element {
   return (
     <div className="form-search"
       onFocus={handleFocus}
+      onMouseLeave={handleBlur}
     >
       <form
         className="form-search__form"
