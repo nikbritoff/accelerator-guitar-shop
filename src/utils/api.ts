@@ -11,9 +11,14 @@ export const createApiURL = (currentParams: string, page = CatalogSettings.Start
   const sortingType = queryParams[queryParamName.Sorting] = queryParams[queryParamName.Sorting] ? `&${queryParamName.Sorting}=${queryParams[queryParamName.Sorting]}` : '';
   const sortingOrder = queryParams[queryParamName.Order] = queryParams[queryParamName.Order] ? `&${queryParamName.Order}=${queryParams[queryParamName.Order]}` : '';
   const guitarSelectedType = queryParams[queryParamName.Type]
-    ? `&${queryParamName.Type}=${queryParams[queryParamName.Type]?.toString().split(',').join(`&${queryParamName.Type}=`)}` : '';
+    ? `&${queryParamName.Type}=${queryParams[queryParamName.Type]?.toString().split(',').join(`&${queryParamName.Type}=`)}`
+    : '';
 
-  const url = `${APIRoute.Guitars}${guitarsRange}${name}${minPrice}${maxPrice}${sortingType}${sortingOrder}${guitarSelectedType}`;
+  const guitarSelectedStringCount = queryParams[queryParamName.String]
+    ? `&${queryParamName.String}=${queryParams[queryParamName.String]?.toString().split(',').join(`&${queryParamName.String}=`)}`
+    : '';
+
+  const url = `${APIRoute.Guitars}${guitarsRange}${name}${minPrice}${maxPrice}${sortingType}${sortingOrder}${guitarSelectedType}${guitarSelectedStringCount}`;
 
   return url;
 };

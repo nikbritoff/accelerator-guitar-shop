@@ -51,6 +51,7 @@ export enum queryParamName {
   MinPrice = 'price_gte',
   MaxPrice = 'price_lte',
   Type = 'type',
+  String = 'stringCount',
   Sorting = '_sort',
   Order = '_order',
 }
