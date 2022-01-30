@@ -27,3 +27,17 @@ export const changeScreen = createAction(
     payload: screen,
   }),
 );
+
+export const loadSearchResultsSuccess = createAction(
+  ActionType.LoadSearchResultsSuccess,
+  (result: Guitar[]) => ({
+    payload: result,
+  }),
+);
+
+export const loadMinMaxPrices = createAction(
+  ActionType.LoadMinMaxPrices,
+  (result: Guitar[]) => ({
+    payload: result,
+  }),
+);

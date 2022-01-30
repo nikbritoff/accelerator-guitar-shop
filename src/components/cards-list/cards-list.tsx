@@ -15,6 +15,7 @@ function CardsList({guitarsList}: CardsListProps): JSX.Element {
           previewImg={guitar.previewImg}
           rating={guitar.rating}
           price={guitar.price}
+          id={guitar.id}
         />
       ))}
     </div>

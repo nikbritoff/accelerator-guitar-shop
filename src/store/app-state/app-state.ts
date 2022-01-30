@@ -3,7 +3,7 @@ import { Screen } from '../../const';
 import { changeScreen } from '../action';
 
 const initialState = {
-  currentScreen: Screen.Catalog,
+  currentScreen: Screen.Main,
   catalogPage: 1,
 };
 
