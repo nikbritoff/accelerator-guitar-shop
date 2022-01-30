@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import CardRating from '../card-rating/card-rating';
 
 type ProductCardProps = {
@@ -5,9 +6,10 @@ type ProductCardProps = {
   'previewImg': string,
   'rating': number,
   'price': number,
+  'id': number,
 }
 
-function ProductCard({name, previewImg, rating, price}: ProductCardProps): JSX.Element {
+function ProductCard({name, previewImg, rating, price, id}: ProductCardProps): JSX.Element {
   return (
     <div className="product-card">
       <img
@@ -24,7 +26,13 @@ function ProductCard({name, previewImg, rating, price}: ProductCardProps): JSX.E
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="/#">Подробнее</a>
+        <Link
+          className="button button--mini"
+          to={`/catalog/${id}`}
+          // href="/#"
+        >
+          Подробнее
+        </Link>
         <a className="button button--red button--mini button--add-to-cart" href="/#">Купить</a>
       </div>
     </div>

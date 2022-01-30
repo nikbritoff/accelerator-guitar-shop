@@ -95,7 +95,8 @@ function Search({history}: SearchProps): JSX.Element {
             onMouseOver={handleFocus}
             onBlur={handleBlur}
             onClick={() => {
-              setValue(guitar.name);
+              // setValue(guitar.name);
+              history.push(`/catalog/${guitar.id}`);
             }}
           >
             {guitar.name}

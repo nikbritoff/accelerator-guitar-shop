@@ -10,6 +10,7 @@ export enum ActionType {
   LoadGuitarsError = 'guitars/loadError',
   ChangeGuitarsAmount = 'guitars/changeAmount',
   LoadSearchResultsSuccess = 'search/loadSuccess',
+  LoadMinMaxPrices = 'guitars/loadPrices',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

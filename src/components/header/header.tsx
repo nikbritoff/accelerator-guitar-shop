@@ -27,7 +27,7 @@ function Header({history} : HeaderProps): JSX.Element {
           to="/"
           onClick={() => handleLinkClick(Screen.Main)}
         >
-          <img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип"/>
+          <img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/>
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">

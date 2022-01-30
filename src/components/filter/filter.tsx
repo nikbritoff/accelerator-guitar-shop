@@ -2,19 +2,24 @@ import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { createApiURL } from '../../utils/api';
 import queryString from 'query-string';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetcDataAction } from '../../store/api-actions';
 import { History } from 'history';
 import { CatalogSettings, GUITARS, queryParamName } from '../../const';
 import { getAvailableStrings } from '../../utils/filter';
 import { GuitarFilterInfo } from '../../types/guitar-filter-info';
+import { getMaxPrice, getMinPrice } from '../../store/guitars/selectors';
 
 type FilterProps = {
   history: History;
 }
 
+// const ZERO_PRICE = '0';
+
 function Filter({ history }: FilterProps): JSX.Element {
   const dispatch = useDispatch();
+  const minListPrice = useSelector(getMinPrice);
+  const maxListPrice = useSelector(getMaxPrice);
   const totalStrings = getAvailableStrings(GUITARS);
 
   const { search } = useLocation();
@@ -42,24 +47,86 @@ function Filter({ history }: FilterProps): JSX.Element {
 
 
   const handleMinPriceInput = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setMinPrice(evt.target.value.trim());
+    const value = evt.target.value.trim();
+
+    if (Number(value) < minListPrice && value.length > String(minListPrice).length) {
+      setMinPrice(String(minListPrice));
+    } else {
+      setMinPrice(value);
+    }
 
     queryParams.delete(queryParamName.MinPrice);
     queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
 
     if (evt.target.value.trim() !== '') {
       queryParams.set(queryParamName.MinPrice, evt.target.value.trim());
+      return;
+    }
+
+    if (evt.target.value.trim() === '') {
+      queryParams.delete(queryParamName.MinPrice);
     }
   };
 
   const handleMaxPriceInput = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setMaxPrice(evt.target.value.trim());
+    const value = evt.target.value.trim();
+
+    if (Number(value) > maxListPrice) {
+      setMaxPrice(String(maxListPrice));
+    } else {
+      setMaxPrice(value);
+    }
 
     queryParams.delete(queryParamName.MaxPrice);
     queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
 
     if (evt.target.value.trim() !== '') {
       queryParams.set(queryParamName.MaxPrice, evt.target.value.trim());
+      return;
+    }
+
+    if (evt.target.value.trim() === '') {
+      queryParams.delete(queryParamName.MaxPrice);
+    }
+  };
+
+  const handleMinPriceBlur = (): void => {
+    queryParams.delete(queryParamName.MinPrice);
+    queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
+
+    if (minPrice === '') {
+      return;
+    }
+
+    if (Number(minPrice) < minListPrice) {
+      setMinPrice(String(minListPrice));
+      queryParams.set(queryParamName.MinPrice, String(minListPrice));
+      return;
+    }
+
+    if (Number(minPrice) > Number(maxPrice)) {
+      setMinPrice(maxPrice);
+      queryParams.set(queryParamName.MinPrice, maxPrice);
+    }
+  };
+
+  const handleMaxPriceBlur = (): void => {
+    queryParams.delete(queryParamName.MaxPrice);
+    queryParams.set(queryParamName.Page, String(CatalogSettings.StartPage));
+
+    if (maxPrice === '') {
+      return;
+    }
+
+    if (Number(maxPrice) > maxListPrice) {
+      setMaxPrice(String(maxListPrice));
+      queryParams.set(queryParamName.MaxPrice, String(maxListPrice));
+      return;
+    }
+
+    if (Number(maxPrice) < Number(minPrice)) {
+      setMaxPrice(minPrice);
+      queryParams.set(queryParamName.MaxPrice, minPrice);
     }
   };
 
@@ -148,22 +215,26 @@ function Filter({ history }: FilterProps): JSX.Element {
             <label className="visually-hidden">Минимальная цена</label>
             <input
               type="number"
-              placeholder="1 000"
+              placeholder={String(minListPrice)}
               id="priceMin"
               name="от"
+              min={0}
               value={minPrice}
               onInput={handleMinPriceInput}
+              onBlur={handleMinPriceBlur}
             />
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
             <input
               type="number"
-              placeholder="30 000"
+              placeholder={String(maxListPrice)}
               id="priceMax"
               name="до"
+              min={0}
               value={maxPrice}
               onInput={handleMaxPriceInput}
+              onBlur={handleMaxPriceBlur}
             />
           </div>
         </div>

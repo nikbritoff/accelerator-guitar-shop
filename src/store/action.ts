@@ -34,3 +34,10 @@ export const loadSearchResultsSuccess = createAction(
     payload: result,
   }),
 );
+
+export const loadMinMaxPrices = createAction(
+  ActionType.LoadMinMaxPrices,
+  (result: Guitar[]) => ({
+    payload: result,
+  }),
+);

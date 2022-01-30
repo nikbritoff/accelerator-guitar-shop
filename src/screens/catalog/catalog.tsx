@@ -13,7 +13,7 @@ import { AppRoute } from '../../const';
 import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/guitars/selectors';
 import queryString from 'query-string';
 import { History } from 'history';
-import { fetcDataAction } from '../../store/api-actions';
+import { fetcDataAction, fetchMinMaxPrices } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { createApiURL } from '../../utils/api';
 
@@ -49,18 +49,14 @@ function Catalog({history} : CatalogProps): JSX.Element {
   const guitarsError = useSelector(getGuitarsError);
   const guitarsList = useSelector(getGuitarsList);
 
-
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const { page } = queryString.parse(search);
   const url = createApiURL(queryParams.toString(), Number(page));
 
-  if (!page) {
-    history.push(`/catalog?page=${1}`);
-  }
-
   useEffect(() => {
     dispatch(fetcDataAction(url));
+    dispatch(fetchMinMaxPrices());
   }, [dispatch, url]);
 
   if (guitarsError) {
@@ -89,7 +85,6 @@ function Catalog({history} : CatalogProps): JSX.Element {
             </ul>
             <div className="catalog">
               <Filter history={history}/>
-              {/* <Sorting sortingOrder={sortingOrder} setSortingOrder={setSortingOrder}/> */}
               <Sorting history={history}/>
               {!guitarsLoading && <CardsList guitarsList={guitarsList}/>}
               {guitarsLoading && <Loading/>}

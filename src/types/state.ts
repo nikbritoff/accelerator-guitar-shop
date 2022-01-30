@@ -7,6 +7,8 @@ export type GuitarsData = {
   guitarsError: boolean,
   guitarsAmount: number,
   searchResults: Guitar[],
+  minPrice: number,
+  maxPrice: number,
 };
 
 export type State = RootState;

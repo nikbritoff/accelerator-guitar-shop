@@ -1,5 +1,6 @@
 export enum AppRoute {
   Catalog = '/catalog',
+  Guitar = '/catalog/:id',
   NotFoud = '/404',
 }
 

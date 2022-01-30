@@ -7,3 +7,5 @@ export const getGuitarsLoading = (state: State): boolean => state[NameSpace.Guit
 export const getGuitarsError = (state: State): boolean => state[NameSpace.Guitars].guitarsError;
 export const getGuitarsAmount = (state: State): number => state[NameSpace.Guitars].guitarsAmount;
 export const getSearchResults = (state: State): Guitar[] => state[NameSpace.Guitars].searchResults;
+export const getMinPrice = (state: State): number => state[NameSpace.Guitars].minPrice;
+export const getMaxPrice = (state: State): number => state[NameSpace.Guitars].maxPrice;
