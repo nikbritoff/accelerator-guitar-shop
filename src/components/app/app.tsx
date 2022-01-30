@@ -14,7 +14,6 @@ function App(): JSX.Element {
           path={AppRoute.Catalog}
           render={() => <Catalog history={browserHistory}/>}
         >
-          {/* <Catalog history={browserHistory}/> */}
         </Route>
         <Route exact path={AppRoute.Guitar}>
           <Guitar history={browserHistory}/>

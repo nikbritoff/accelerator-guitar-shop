@@ -29,7 +29,6 @@ function ProductCard({name, previewImg, rating, price, id}: ProductCardProps): J
         <Link
           className="button button--mini"
           to={`/catalog/${id}`}
-          // href="/#"
         >
           Подробнее
         </Link>
