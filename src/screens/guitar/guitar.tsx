@@ -1,9 +1,12 @@
 import { History } from 'history';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
-import { AppRoute } from '../../const';
+import { AppRoute, Screen } from '../../const';
+import { changeScreen } from '../../store/action';
 import styles from './guitar.module.css';
 
 type GuitarProps = {
@@ -12,6 +15,11 @@ type GuitarProps = {
 
 function Guitar({history}: GuitarProps): JSX.Element {
   const {id} = useParams<{ id: string }>();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(changeScreen(Screen.Other));
+  });
 
   return (
     <>

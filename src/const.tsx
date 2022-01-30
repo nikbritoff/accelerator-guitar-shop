@@ -23,6 +23,7 @@ export enum Screen {
   Catalog  = 'Каталог',
   WhereBuy = 'Где купить?',
   About = 'О компании',
+  Other = 'other',
 }
 
 export const CATALOG_GUITARS_LIMIT = 9;
