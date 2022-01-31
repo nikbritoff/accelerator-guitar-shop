@@ -14,8 +14,6 @@ type FilterProps = {
   history: History;
 }
 
-// const ZERO_PRICE = '0';
-
 function Filter({ history }: FilterProps): JSX.Element {
   const dispatch = useDispatch();
   const minListPrice = useSelector(getMinPrice);

@@ -1,5 +1,5 @@
 import { APIRoute, COUNT_TOKEN_NAME, queryParamName, SortingOrder, SortingType } from '../const';
-import { ThunkActionResult } from '../types/action';
+import {  ThunkActionResult } from '../types/action';
 import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitars } from './action';
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
