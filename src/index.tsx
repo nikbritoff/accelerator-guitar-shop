@@ -20,7 +20,7 @@ const store = configureStore({
     }),
 });
 
-(store.dispatch)(fetchGuitarsAction(0, CatalogSettings.GuitarsLimit));
+store.dispatch(fetchGuitarsAction(0, CatalogSettings.GuitarsLimit));
 
 ReactDOM.render(
   <React.StrictMode>

@@ -4,7 +4,6 @@ import { changeScreen } from '../action';
 
 const initialState = {
   currentScreen: Screen.Main,
-  catalogPage: 1,
 };
 
 const appState = createReducer(initialState, (builder) => {
