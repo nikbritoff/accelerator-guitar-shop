@@ -5,7 +5,7 @@ import Filter from '../../components/filter/filter';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
-import Loading from '../../components/icons-list/loading/loading';
+import Loading from '../../components/loading/loading';
 import LoadingError from '../../components/loading-error/loading-error';
 import Pagination from '../../components/pagination/pagination';
 import Sorting from '../../components/sorting/sorting';

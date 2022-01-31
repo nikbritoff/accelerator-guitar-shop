@@ -4,9 +4,6 @@ import { guitars } from './guitars';
 
 const mockGuitars = makeFakeGuitarsList();
 
-// eslint-disable-next-line no-console
-console.log(mockGuitars);
-
 describe('Reducer: guitars', () => {
   it('without additional parameters should return initial state',  () => {
     expect(guitars(void 0, {type: 'UNKNOWN_ACTION'}))
