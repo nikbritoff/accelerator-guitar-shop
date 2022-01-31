@@ -26,9 +26,6 @@ export enum Screen {
   Other = 'other',
 }
 
-export const CATALOG_GUITARS_LIMIT = 9;
-export const START_CATALOG_PAGE = 1;
-
 export enum CatalogSettings {
   GuitarsLimit = 9,
   StartPage = 1,
