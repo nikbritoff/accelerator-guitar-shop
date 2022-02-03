@@ -23,7 +23,12 @@ function Search({history}: SearchProps): JSX.Element {
   const handleBlur = (): void => setFocused(false);
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setValue(evt.target.value.trim());
+    handleFocus();
+    setValue(evt.target.value);
+
+    if (evt.target.value === '') {
+      setFocused(false);
+    }
   };
 
   const { search } = useLocation();
@@ -40,7 +45,7 @@ function Search({history}: SearchProps): JSX.Element {
     if (value === '') {
       queryParams.delete(queryParamName.Name);
     } else {
-      queryParams.set(queryParamName.Name, value);
+      queryParams.set(queryParamName.Name, value.trim());
     }
 
     history.replace({
@@ -52,12 +57,13 @@ function Search({history}: SearchProps): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(fetchSearchResults(value));
+    if (value !== '') {
+      dispatch(fetchSearchResults(value));
+    }
   }, [dispatch, value]);
 
   return (
     <div className="form-search"
-      onFocus={handleFocus}
       onMouseLeave={handleBlur}
     >
       <form
@@ -76,7 +82,6 @@ function Search({history}: SearchProps): JSX.Element {
           autoComplete="off"
           placeholder="что вы ищите?"
           value={value}
-          onFocus={handleFocus}
           onChange={handleChange}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
@@ -85,6 +90,7 @@ function Search({history}: SearchProps): JSX.Element {
         'form-search__select-list',
         styles['result-list'],
         {'hidden' : !focused},
+        {'hidden' : searchResults.length < 1},
       )}
       >
         {searchResults.map((guitar) => (
