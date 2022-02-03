@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSearchResults } from '../../store/guitars/selectors';
 import styles from './search.module.css';
 import cn from 'classnames';
-import { fetcDataAction, fetchSearchResults } from '../../store/api-actions';
+import { fetchSearchResults } from '../../store/api-actions';
 import { History } from 'history';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import { createApiURL } from '../../utils/api';
-import { queryParamName } from '../../const';
 
 type SearchProps = {
   history: History,
@@ -23,41 +21,30 @@ function Search({history}: SearchProps): JSX.Element {
   const handleBlur = (): void => setFocused(false);
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setValue(evt.target.value.trim());
+    handleFocus();
+    setValue(evt.target.value);
+
+    if (evt.target.value === '') {
+      setFocused(false);
+    }
   };
 
   const { search } = useLocation();
-  const queryParams = new URLSearchParams(search);
   const name  = queryString.parse(search).name ? String(queryString.parse(search).name) : '';
   const [value, setValue] = useState(name);
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    queryParams.delete(queryParamName.Name);
-    queryParams.set(queryParamName.Page, String(1));
-    setFocused(false);
-
-    if (value === '') {
-      queryParams.delete(queryParamName.Name);
-    } else {
-      queryParams.set(queryParamName.Name, value);
-    }
-
-    history.replace({
-      search: queryParams.toString(),
-    });
-
-    const url = createApiURL(queryParams.toString(), 1);
-    dispatch(fetcDataAction(url));
   };
 
   useEffect(() => {
-    dispatch(fetchSearchResults(value));
+    if (value !== '') {
+      dispatch(fetchSearchResults(value));
+    }
   }, [dispatch, value]);
 
   return (
     <div className="form-search"
-      onFocus={handleFocus}
       onMouseLeave={handleBlur}
     >
       <form
@@ -76,8 +63,8 @@ function Search({history}: SearchProps): JSX.Element {
           autoComplete="off"
           placeholder="что вы ищите?"
           value={value}
-          onFocus={handleFocus}
           onChange={handleChange}
+          onFocus={handleFocus}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
@@ -85,6 +72,7 @@ function Search({history}: SearchProps): JSX.Element {
         'form-search__select-list',
         styles['result-list'],
         {'hidden' : !focused},
+        {'hidden' : searchResults.length < 1},
       )}
       >
         {searchResults.map((guitar) => (

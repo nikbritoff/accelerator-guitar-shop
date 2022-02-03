@@ -102,6 +102,19 @@ function Filter({ history }: FilterProps): JSX.Element {
       return;
     }
 
+    // Дополнительная проверка при 0 значении maxPrice
+    if (Number(maxPrice) === 0) {
+      if (Number(minPrice) <= maxListPrice) {
+        setMinPrice(minPrice);
+        queryParams.set(queryParamName.MinPrice, minPrice);
+      } else {
+        setMinPrice(String(maxListPrice));
+        queryParams.set(queryParamName.MinPrice, String(maxListPrice));
+      }
+
+      return;
+    }
+
     if (Number(minPrice) > Number(maxPrice)) {
       setMinPrice(maxPrice);
       queryParams.set(queryParamName.MinPrice, maxPrice);
