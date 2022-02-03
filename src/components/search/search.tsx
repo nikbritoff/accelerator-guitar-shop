@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSearchResults } from '../../store/guitars/selectors';
 import styles from './search.module.css';
 import cn from 'classnames';
-import { fetcDataAction, fetchSearchResults } from '../../store/api-actions';
+import { fetchSearchResults } from '../../store/api-actions';
 import { History } from 'history';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import { createApiURL } from '../../utils/api';
-import { queryParamName } from '../../const';
 
 type SearchProps = {
   history: History,
@@ -32,28 +30,11 @@ function Search({history}: SearchProps): JSX.Element {
   };
 
   const { search } = useLocation();
-  const queryParams = new URLSearchParams(search);
   const name  = queryString.parse(search).name ? String(queryString.parse(search).name) : '';
   const [value, setValue] = useState(name);
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    queryParams.delete(queryParamName.Name);
-    queryParams.set(queryParamName.Page, String(1));
-    setFocused(false);
-
-    if (value === '') {
-      queryParams.delete(queryParamName.Name);
-    } else {
-      queryParams.set(queryParamName.Name, value.trim());
-    }
-
-    history.replace({
-      search: queryParams.toString(),
-    });
-
-    const url = createApiURL(queryParams.toString(), 1);
-    dispatch(fetcDataAction(url));
   };
 
   useEffect(() => {
@@ -83,6 +64,7 @@ function Search({history}: SearchProps): JSX.Element {
           placeholder="что вы ищите?"
           value={value}
           onChange={handleChange}
+          onFocus={handleFocus}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
