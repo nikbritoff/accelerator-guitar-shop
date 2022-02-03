@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { createApiURL } from '../../utils/api';
+import { createApiURL, createApiURLForMinMaxPrices } from '../../utils/api';
 import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetcDataAction } from '../../store/api-actions';
+import { fetcDataAction, fetchMinMaxPrice } from '../../store/api-actions';
 import { History } from 'history';
 import { CatalogSettings, GUITARS, queryParamName } from '../../const';
 import { getAvailableStrings } from '../../utils/filter';
@@ -152,6 +152,12 @@ function Filter({ history }: FilterProps): JSX.Element {
     }
 
     queryParams.delete(queryParamName.Type);
+
+    queryParams.delete(queryParamName.MinPrice);
+    setMinPrice('');
+    queryParams.delete(queryParamName.MaxPrice);
+    setMaxPrice('');
+
     selectedTypes.forEach((currentType) => queryParams.append(queryParamName.Type, currentType));
 
     if (selectedTypes.length === 0) {
@@ -214,6 +220,10 @@ function Filter({ history }: FilterProps): JSX.Element {
 
     const url = createApiURL(queryParams.toString(), Number(page));
     dispatch(fetcDataAction(url));
+
+    // Запрос цен для плейсхолдеров
+    const urlForPrice = createApiURLForMinMaxPrices(queryParams.toString());
+    dispatch(fetchMinMaxPrice(urlForPrice));
   }, [dispatch, history, minPrice, maxPrice, queryParams, search, selectedTypes, availableStrings, selectedStrings]);
 
   return (
