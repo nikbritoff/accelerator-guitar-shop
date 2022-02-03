@@ -13,7 +13,7 @@ import { AppRoute } from '../../const';
 import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/guitars/selectors';
 import queryString from 'query-string';
 import { History } from 'history';
-import { fetcDataAction, fetchMinMaxPrices } from '../../store/api-actions';
+import { fetcDataAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { createApiURL } from '../../utils/api';
 
@@ -56,7 +56,6 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
   useEffect(() => {
     dispatch(fetcDataAction(url));
-    dispatch(fetchMinMaxPrices());
   }, [dispatch, url]);
 
   if (guitarsError) {

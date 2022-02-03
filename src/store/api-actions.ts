@@ -1,6 +1,5 @@
-import { APIRoute, COUNT_TOKEN_NAME, queryParamName, SortingOrder, SortingType } from '../const';
+import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
-import { Guitar } from '../types/guitar';
 import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitars } from './action';
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
@@ -24,9 +23,6 @@ export const fetcDataAction = (url: string): ThunkActionResult => (
       const { data, headers } = await api.get(url);
       dispatch(loadGuitarsSuccess(data));
       dispatch(changeGuitarsAmount(Number(headers[COUNT_TOKEN_NAME])));
-
-      const dataFilteredByPrice = data.slice().sort((firstGuitar: Guitar, secondGuitar:Guitar) => firstGuitar.price - secondGuitar.price);
-      dispatch(loadMinMaxPrices(dataFilteredByPrice));
     }
     catch {
       dispatch(loadGuitarsError());
@@ -41,9 +37,14 @@ export const fetchSearchResults = (value: string): ThunkActionResult => (
   }
 );
 
-export const fetchMinMaxPrices = (): ThunkActionResult => (
+export const fetchMinMaxPrice = (url: string): ThunkActionResult => (
   async (dispatch, _, api) => {
-    const { data } = await api.get(`${APIRoute.Guitars}?${queryParamName.Sorting}=${SortingType.Price}&${queryParamName.Order}=${SortingOrder.Increase}`);
-    dispatch(loadMinMaxPrices(data));
+    try {
+      const { data } = await api.get(url);
+      dispatch(loadMinMaxPrices(data));
+    }
+    catch {
+      dispatch(loadGuitarsError());
+    }
   }
 );
