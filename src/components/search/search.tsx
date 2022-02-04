@@ -68,20 +68,24 @@ function Search({history}: SearchProps): JSX.Element {
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className={cn(
-        'form-search__select-list',
-        styles['result-list'],
-        {'hidden' : !focused},
-        {'hidden' : searchResults.length < 1},
-      )}
+      <ul
+        className={cn(
+          'form-search__select-list',
+          styles['result-list'],
+          {'hidden' : !focused},
+          {'hidden' : searchResults.length < 1},
+        )}
       >
-        {searchResults.map((guitar) => (
+        {searchResults.map((guitar, index) => (
           <li
             key={guitar.name}
             className="form-search__select-item"
             tabIndex={0}
-            onMouseOver={handleFocus}
-            onBlur={handleBlur}
+            onBlur={() => {
+              if (index === searchResults.length - 1) {
+                handleBlur();
+              }
+            }}
             onClick={() => {
               history.push(`/catalog/${guitar.id}`);
             }}
