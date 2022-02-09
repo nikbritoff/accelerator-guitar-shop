@@ -1,12 +1,39 @@
 import { History } from 'history';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
+import LoadingError from '../../components/loading-error/loading-error';
+import Loading from '../../components/loading/loading';
 import { AppRoute, Screen } from '../../const';
 import { changeScreen } from '../../store/action';
+import { fetchGuitarInfo } from '../../store/api-actions';
+import { getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
+import { translateType } from '../../utils/guitar-info';
+
+type ErrorPageProps = {
+  history: History,
+  children: React.ReactNode
+}
+
+function ErrorPage({history, children}: ErrorPageProps) {
+  return (
+    <>
+      <IconsList/>
+      <div className="wrapper">
+        <Header history={history}/>
+        <main className="page-content">
+          <div className="container">
+            {children}
+          </div>
+        </main>
+        <Footer/>
+      </div>
+    </>
+  );
+}
 
 type GuitarProps = {
   history: History,
@@ -16,9 +43,33 @@ function Guitar({history}: GuitarProps): JSX.Element {
   const {id} = useParams<{ id: string }>();
 
   const dispatch = useDispatch();
+  const guitarInfoLoading = useSelector(getGuitarInfoLoading);
+  const guitarInfoError = useSelector(getGuitarInfoError);
+  const guitarInfo = useSelector(getGuitarInfo);
+
   useEffect(() => {
     dispatch(changeScreen(Screen.Other));
   });
+
+  useEffect(() => {
+    dispatch(fetchGuitarInfo(id));
+  }, [dispatch, id]);
+
+  if (guitarInfoError) {
+    return (
+      <ErrorPage history={history}>
+        <LoadingError/>
+      </ErrorPage>
+    );
+  }
+
+  if (guitarInfoLoading) {
+    return (
+      <ErrorPage history={history}>
+        <Loading/>
+      </ErrorPage>
+    );
+  }
 
   return (
     <>
@@ -36,13 +87,13 @@ function Guitar({history}: GuitarProps): JSX.Element {
                 <Link className="link" to={AppRoute.Catalog}>Каталог</Link>
               </li>
               <li className="breadcrumbs__item">
-                <Link className="link" to={`${AppRoute.Catalog}/${id}`}>Товар id: {id}</Link>
+                <Link className="link" to={`${AppRoute.Catalog}/${id}`}>{guitarInfo.name}</Link>
               </li>
             </ul>
             <div className="product-container">
-              <img className="product-container__img" src="img/content/guitar-2.jpg" width="90" height="235" alt=""/>
+              <img className="product-container__img" src={`/${guitarInfo.previewImg}`} width="90" height="235" alt=""/>
               <div className="product-container__info-wrapper">
-                <h2 className="product-container__title title title--big title--uppercase">СURT Z30 Plus</h2>
+                <h2 className="product-container__title title title--big title--uppercase">{guitarInfo.name}</h2>
                 <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
                   <svg width="14" height="14" aria-hidden="true">
                     <use xlinkHref="#icon-full-star"></use>
@@ -69,26 +120,28 @@ function Guitar({history}: GuitarProps): JSX.Element {
                   </a>
                   <div className="tabs__content" id="characteristics">
                     <table className="tabs__table">
-                      <tr className="tabs__table-row">
-                        <td className="tabs__title">Артикул:</td>
-                        <td className="tabs__value">SO754565</td>
-                      </tr>
-                      <tr className="tabs__table-row">
-                        <td className="tabs__title">Тип:</td>
-                        <td className="tabs__value">Электрогитара</td>
-                      </tr>
-                      <tr className="tabs__table-row">
-                        <td className="tabs__title">Количество струн:</td>
-                        <td className="tabs__value">6 струнная</td>
-                      </tr>
+                      <tbody>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Артикул:</td>
+                          <td className="tabs__value">{guitarInfo.vendorCode}</td>
+                        </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Тип:</td>
+                          <td className="tabs__value">{translateType(guitarInfo.type)}</td>
+                        </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Количество струн:</td>
+                          <td className="tabs__value">{guitarInfo.stringCount} струнная</td>
+                        </tr>
+                      </tbody>
                     </table>
-                    <p className="tabs__product-description hidden">Гитара подходит как для старта обучения, так и для домашних занятий или использования в полевых условиях, например, в походах или для проведения уличных выступлений. Доступная стоимость, качество и надежная конструкция, а также приятный внешний вид, который сделает вас звездой вечеринки.</p>
+                    <p className="tabs__product-description hidden">{guitarInfo.description}</p>
                   </div>
                 </div>
               </div>
               <div className="product-container__price-wrapper">
                 <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-                <p className="product-container__price-info product-container__price-info--value">52 000 ₽</p>
+                <p className="product-container__price-info product-container__price-info--value">{guitarInfo.price} ₽</p>
                 <a className="button button--red button--big product-container__button" href="/#">
                   Добавить в корзину
                 </a>

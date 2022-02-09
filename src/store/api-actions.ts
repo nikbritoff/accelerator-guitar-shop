@@ -1,6 +1,6 @@
 import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
-import { changeGuitarsAmount, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitars } from './action';
+import { changeGuitarsAmount, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitarInfo, requestGuitars } from './action';
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
   async (dispatch, _, api) => {
@@ -45,6 +45,19 @@ export const fetchMinMaxPrice = (url: string): ThunkActionResult => (
     }
     catch {
       dispatch(loadGuitarsError());
+    }
+  }
+);
+
+export const fetchGuitarInfo = (id: string): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    try {
+      dispatch(requestGuitarInfo());
+      const { data } = await api.get(`${APIRoute.Guitars}/${id}`);
+      dispatch(loadGuitarInfoSuccess(data));
+    }
+    catch {
+      dispatch(loadGuitarInfoError());
     }
   }
 );

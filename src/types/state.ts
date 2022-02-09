@@ -11,4 +11,10 @@ export type GuitarsData = {
   maxPrice: number,
 };
 
+export type GuitarInfo = {
+  guitarInfo: Guitar,
+  guitarInfoLoading: boolean,
+  guitarInfoLoadError: boolean,
+}
+
 export type State = RootState;

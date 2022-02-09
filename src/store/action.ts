@@ -41,3 +41,14 @@ export const loadMinMaxPrices = createAction(
     payload: result,
   }),
 );
+
+export const requestGuitarInfo = createAction(ActionType.RequestGuitarInfo);
+
+export const loadGuitarInfoSuccess = createAction(
+  ActionType.LoadGuitarInfoSuccess,
+  (guitarInfo: Guitar) => ({
+    payload: guitarInfo,
+  }),
+);
+
+export const loadGuitarInfoError = createAction(ActionType.LoadGuitarInfoError);

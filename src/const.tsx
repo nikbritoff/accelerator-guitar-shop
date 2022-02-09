@@ -74,3 +74,18 @@ export const GUITARS = [
     strings: [4],
   },
 ];
+
+export const GuitarType = {
+  Acoustic: {
+    Eng: 'acoustic',
+    Ru: 'Акустическая',
+  },
+  Electric: {
+    Eng: 'electric',
+    Ru: 'Электрогитара',
+  },
+  Ukulele: {
+    Eng: 'ukulele',
+    Ru: 'Укулеле',
+  },
+};
