@@ -1,6 +1,11 @@
+import { toast } from 'react-toastify';
 import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
-import { changeGuitarsAmount, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitarInfo, requestGuitars } from './action';
+import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitarInfo, requestGuitars } from './action';
+
+const errorMessages = {
+  commentsList: 'Ошибка загрузки комментариев. Повторите попытку позже.',
+};
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
   async (dispatch, _, api) => {
@@ -58,6 +63,18 @@ export const fetchGuitarInfo = (id: string): ThunkActionResult => (
     }
     catch {
       dispatch(loadGuitarInfoError());
+    }
+  }
+);
+
+export const fetchGuitarInfoCommentsList = (id: string): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    try {
+      const { data } = await api.get(`${APIRoute.Guitars}/${id}${APIRoute.Comments}`);
+      dispatch(loadCommentsList(data));
+    }
+    catch {
+      toast.warn(errorMessages.commentsList);
     }
   }
 );

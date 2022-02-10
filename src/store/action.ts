@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Screen } from '../const';
 import { ActionType } from '../types/action';
+import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
 
 export const requestGuitars = createAction(ActionType.RequestGuitars);
@@ -52,3 +53,10 @@ export const loadGuitarInfoSuccess = createAction(
 );
 
 export const loadGuitarInfoError = createAction(ActionType.LoadGuitarInfoError);
+
+export const loadCommentsList = createAction(
+  ActionType.LoadCommentsList,
+  (result: Comment[]) => ({
+    payload: result,
+  }),
+);

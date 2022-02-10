@@ -9,6 +9,7 @@ export const COUNT_TOKEN_NAME = 'x-total-count';
 
 export enum APIRoute {
   Guitars = '/guitars',
+  Comments = '/comments',
 }
 
 export const ratingValues = [

@@ -14,6 +14,7 @@ export enum ActionType {
   RequestGuitarInfo = 'guitar/request',
   LoadGuitarInfoSuccess = 'guitar/loadSuccess',
   LoadGuitarInfoError = 'guitar/loadError',
+  LoadCommentsList = 'guitar/requestCommentsList',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
