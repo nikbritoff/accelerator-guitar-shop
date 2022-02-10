@@ -1,5 +1,5 @@
 import { History } from 'history';
-import { useEffect } from 'react';
+import { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
@@ -12,6 +12,7 @@ import { changeScreen } from '../../store/action';
 import { fetchGuitarInfo } from '../../store/api-actions';
 import { getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
 import { translateType } from '../../utils/guitar-info';
+import cn from 'classnames';
 
 type ErrorPageProps = {
   history: History,
@@ -47,8 +48,24 @@ function Guitar({history}: GuitarProps): JSX.Element {
   const guitarInfoError = useSelector(getGuitarInfoError);
   const guitarInfo = useSelector(getGuitarInfo);
 
+  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
+  const [isCharacteristicsActive, setIsCharacteristicsActive] = useState(false);
+
+  const descriptionTabClickHandler = (evt: MouseEvent<HTMLAnchorElement>): void => {
+    evt.preventDefault();
+    setIsDescriptionActive(!isDescriptionActive);
+    setIsCharacteristicsActive(!isCharacteristicsActive);
+  };
+
+  const characteristicsTabClickHandler = (evt: MouseEvent<HTMLAnchorElement>): void => {
+    evt.preventDefault();
+    setIsDescriptionActive(!isDescriptionActive);
+    setIsCharacteristicsActive(!isCharacteristicsActive);
+  };
+
   useEffect(() => {
     dispatch(changeScreen(Screen.Other));
+    window.scrollTo({top: 0});
   });
 
   useEffect(() => {
@@ -112,14 +129,37 @@ function Guitar({history}: GuitarProps): JSX.Element {
                   </svg><span className="rate__count"></span><span className="rate__message"></span>
                 </div>
                 <div className="tabs">
-                  <a className="button button--medium tabs__button" href="#characteristics">
+                  <a
+                    className={cn(
+                      'button',
+                      'button--medium',
+                      'tabs__button',
+                      {'button--black-border' : isCharacteristicsActive},
+                    )}
+                    href="#characteristics"
+                    onClick={characteristicsTabClickHandler}
+                  >
                     Характеристики
                   </a>
-                  <a className="button button--black-border button--medium tabs__button" href="#description">
+                  <a
+                    className={cn(
+                      'button',
+                      'button--medium',
+                      'tabs__button',
+                      {'button--black-border' : isDescriptionActive},
+                    )}
+                    href="#description"
+                    onClick={descriptionTabClickHandler}
+                  >
                     Описание
                   </a>
                   <div className="tabs__content" id="characteristics">
-                    <table className="tabs__table">
+                    <table
+                      className={cn(
+                        'tabs__table',
+                        {'hidden' : isCharacteristicsActive},
+                      )}
+                    >
                       <tbody>
                         <tr className="tabs__table-row">
                           <td className="tabs__title">Артикул:</td>
@@ -135,7 +175,14 @@ function Guitar({history}: GuitarProps): JSX.Element {
                         </tr>
                       </tbody>
                     </table>
-                    <p className="tabs__product-description hidden">{guitarInfo.description}</p>
+                    <p
+                      className={cn(
+                        'tabs__product-description',
+                        {'hidden' : isDescriptionActive},
+                      )}
+                    >
+                      {guitarInfo.description}
+                    </p>
                   </div>
                 </div>
               </div>
