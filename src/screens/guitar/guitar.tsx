@@ -69,13 +69,10 @@ function Guitar({history}: GuitarProps): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(changeScreen(Screen.Other));
-    window.scrollTo({top: 0});
-  });
-
-  useEffect(() => {
     dispatch(fetchGuitarInfo(id));
     dispatch(fetchGuitarInfoCommentsList(id));
+    dispatch(changeScreen(Screen.Other));
+    window.scrollTo({top: 0});
   }, [dispatch, id]);
 
   if (guitarInfoError) {

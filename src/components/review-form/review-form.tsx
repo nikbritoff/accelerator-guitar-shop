@@ -22,13 +22,18 @@ function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.El
 
   useEffect(() => {
     if (isActive) {
+      document.body.style.overflow = 'hidden';
+
       const closeReviewModal = (evt: KeyboardEvent):void => {
         if(evt.key === 'Escape') {
           setIsReviewModalActive(false);
         }
       };
       window.addEventListener('keydown', closeReviewModal);
-      return () => window.removeEventListener('keydown', closeReviewModal);
+      return () => {
+        window.removeEventListener('keydown', closeReviewModal);
+        document.body.style.overflow = '';
+      };
     }
   },[isActive, setIsReviewModalActive]);
 
@@ -66,7 +71,9 @@ function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.El
                   <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2"/>
                   <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                   <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1"/>
-                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span><span className="rate__message">Поставьте оценку</span>
+                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
+                  <span className="rate__count"></span>
+                  <span className="rate__message">Поставьте оценку</span>
                 </div>
               </div>
             </div>
@@ -76,7 +83,12 @@ function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.El
             <input className="form-review__input" id="user-name" type="text" autoComplete="off"/>
             <label className="form-review__label" htmlFor="user-name">Комментарий</label>
             <textarea className="form-review__input form-review__input--textarea" id="user-name" rows={10} autoComplete="off"></textarea>
-            <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв</button>
+            <button
+              className="button button--medium-20 form-review__button"
+              type="submit"
+            >
+              Отправить отзыв
+            </button>
           </form>
           <button
             className="modal__close-btn button-cross"
