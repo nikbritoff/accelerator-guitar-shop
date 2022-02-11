@@ -8,9 +8,10 @@ import RatingStar from '../rating-star/rating-star';
 
 type ReviewsProps = {
   commentsList: Comment[],
+  setIsReviewModalActive: (isActive: boolean) => void,
 }
 
-function Reviews({commentsList}: ReviewsProps): JSX.Element {
+function Reviews({commentsList, setIsReviewModalActive}: ReviewsProps): JSX.Element {
   const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
 
   const handleMoreCommentsButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
@@ -27,10 +28,19 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
     window.scrollTo({top: 0});
   };
 
+  const handleNewReviewButton = (evt: MouseEvent<HTMLAnchorElement>): void => {
+    evt.preventDefault();
+    setIsReviewModalActive(true);
+  };
+
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
-      <a className="button button--red-border button--big reviews__sumbit-button" href="/#">
+      <a
+        className="button button--red-border button--big reviews__sumbit-button"
+        href="/#"
+        onClick={handleNewReviewButton}
+      >
         Оставить отзыв
       </a>
       {commentsList.slice(CommentsListSettings.StartIndex, shownCommentsAmount).map((comment) => {
