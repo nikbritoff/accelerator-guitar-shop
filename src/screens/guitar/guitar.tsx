@@ -7,13 +7,14 @@ import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
 import LoadingError from '../../components/loading-error/loading-error';
 import Loading from '../../components/loading/loading';
-import { AppRoute, Screen } from '../../const';
+import { AppRoute, ratingValues, Screen } from '../../const';
 import { changeScreen } from '../../store/action';
 import { fetchGuitarInfo, fetchGuitarInfoCommentsList } from '../../store/api-actions';
 import { getCommentsList, getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
 import { translateType } from '../../utils/guitar-info';
 import cn from 'classnames';
 import Reviews from '../../components/reviews/reviews';
+import RatingStar from '../../components/rating-star/rating-star';
 
 type ErrorPageProps = {
   history: History,
@@ -115,23 +116,16 @@ function Guitar({history}: GuitarProps): JSX.Element {
               <div className="product-container__info-wrapper">
                 <h2 className="product-container__title title title--big title--uppercase">{guitarInfo.name}</h2>
                 <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-star"></use>
-                  </svg>
-                  <span className="rate__count">
-                  </span><span className="rate__message"></span>
+                  {ratingValues.map((item) => (
+                    <RatingStar
+                      key={item}
+                      width='14'
+                      height='14'
+                      isFull={item <= Math.round(guitarInfo.rating)}
+                    />
+                  ))}
+                  <span className="rate__count">{commentsList.length}</span>
+                  <span className="rate__message"></span>
                 </div>
                 <div className="tabs">
                   <a

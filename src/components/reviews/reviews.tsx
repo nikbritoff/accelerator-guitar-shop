@@ -1,9 +1,10 @@
 import { useState, MouseEvent } from 'react';
-import { CommentsListSettings } from '../../const';
+import { CommentsListSettings, ratingValues } from '../../const';
 import { Comment } from '../../types/comment';
 import cn from 'classnames';
 import styles from './reviews.module.css';
 import { convertCommentDate } from '../../utils/reviews';
+import RatingStar from '../rating-star/rating-star';
 
 type ReviewsProps = {
   commentsList: Comment[],
@@ -33,7 +34,7 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
         Оставить отзыв
       </a>
       {commentsList.slice(CommentsListSettings.StartIndex, shownCommentsAmount).map((comment) => {
-        const {userName, createAt, advantage, disadvantage, comment: commentText} = comment;
+        const {userName, createAt, advantage, disadvantage, comment: commentText, rating} = comment;
 
         return (
           <div
@@ -46,21 +47,14 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
             </div>
             <div className="rate review__rating-panel" aria-hidden="true">
               <span className="visually-hidden">Рейтинг:</span>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-full-star"></use>
-              </svg>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-full-star"></use>
-              </svg>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-full-star"></use>
-              </svg>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-full-star"></use>
-              </svg>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-star"></use>
-              </svg>
+              {ratingValues.map((item) => (
+                <RatingStar
+                  key={item}
+                  width='16'
+                  height='16'
+                  isFull={item <= Math.round(rating)}
+                />
+              ))}
               <span className="rate__count"></span>
               <span className="rate__message"></span>
             </div>
