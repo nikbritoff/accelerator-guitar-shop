@@ -3,13 +3,13 @@ import { CommentsListSettings } from '../../const';
 import { Comment } from '../../types/comment';
 import cn from 'classnames';
 import styles from './reviews.module.css';
+import { convertCommentDate } from '../../utils/reviews';
 
 type ReviewsProps = {
   commentsList: Comment[],
 }
 
 function Reviews({commentsList}: ReviewsProps): JSX.Element {
-
   const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
 
   const handleMoreCommentsButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
@@ -42,7 +42,7 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
           >
             <div className="review__wrapper">
               <h4 className="review__title review__title--author title title--lesser">{userName}</h4>
-              <span className="review__date">12 декабря{createAt}</span>
+              <span className="review__date">{convertCommentDate(createAt)}</span>
             </div>
             <div className="rate review__rating-panel" aria-hidden="true">
               <span className="visually-hidden">Рейтинг:</span>
@@ -91,7 +91,6 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
           Показать еще отзывы
         </button>}
       <a
-        // className="button button--up button--red-border button--big reviews__up-button"
         className={cn(
           'button button--up button--red-border button--big reviews__up-button',
           styles['top-button'],
