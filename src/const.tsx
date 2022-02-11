@@ -33,6 +33,13 @@ export enum CatalogSettings {
   StartPage = 1,
 }
 
+export enum CommentsListSettings {
+  StartIndex = 0,
+  ShownStep = 3,
+}
+
+export const COMMENTS_SHOWN_STEP = 3;
+
 export enum SortingOrder {
   Increase = 'asc',
   Decrease = 'desc',

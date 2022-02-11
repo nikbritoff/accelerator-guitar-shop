@@ -1,17 +1,38 @@
+import { useState, MouseEvent } from 'react';
+import { CommentsListSettings } from '../../const';
 import { Comment } from '../../types/comment';
+import cn from 'classnames';
+import styles from './reviews.module.css';
 
 type ReviewsProps = {
   commentsList: Comment[],
 }
 
 function Reviews({commentsList}: ReviewsProps): JSX.Element {
+
+  const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
+
+  const handleMoreCommentsButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
+    evt.preventDefault();
+    if (shownCommentsAmount + CommentsListSettings.ShownStep > commentsList.length) {
+      setShownCommentsAmount(commentsList.length);
+    } else {
+      setShownCommentsAmount(shownCommentsAmount + CommentsListSettings.ShownStep);
+    }
+  };
+
+  const handleUpButtonClick = (evt: MouseEvent<HTMLAnchorElement>): void => {
+    evt.preventDefault();
+    window.scrollTo({top: 0});
+  };
+
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
       <a className="button button--red-border button--big reviews__sumbit-button" href="/#">
         Оставить отзыв
       </a>
-      {commentsList.map((comment) => {
+      {commentsList.slice(CommentsListSettings.StartIndex, shownCommentsAmount).map((comment) => {
         const {userName, createAt, advantage, disadvantage, comment: commentText} = comment;
 
         return (
@@ -62,7 +83,24 @@ function Reviews({commentsList}: ReviewsProps): JSX.Element {
         );
       },
       )}
-      <button className="button button--medium reviews__more-button">Показать еще отзывы</button><a className="button button--up button--red-border button--big reviews__up-button" href="#header">Наверх</a>
+      {shownCommentsAmount < commentsList.length &&
+        <button
+          className="button button--medium reviews__more-button"
+          onClick={handleMoreCommentsButtonClick}
+        >
+          Показать еще отзывы
+        </button>}
+      <a
+        // className="button button--up button--red-border button--big reviews__up-button"
+        className={cn(
+          'button button--up button--red-border button--big reviews__up-button',
+          styles['top-button'],
+        )}
+        href="#header"
+        onClick={handleUpButtonClick}
+      >
+        Наверх
+      </a>
     </section>
   );
 }
