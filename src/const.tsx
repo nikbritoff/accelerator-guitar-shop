@@ -97,3 +97,11 @@ export const GuitarType = {
     Ru: 'Укулеле',
   },
 };
+
+export const RATING_TITLES = [
+  'Ужасно',
+  'Плохо',
+  'Нормально',
+  'Хорошо',
+  'Отлично',
+];

@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import { MouseEvent, useEffect, useState, ChangeEvent } from 'react';
+import { RATING_TITLES } from '../../const';
 
 type ReviewFormProps = {
   isActive: boolean,
@@ -37,7 +38,7 @@ const initialState = {
     touched: false,
   },
   rating: {
-    value: '',
+    value: '0',
     error: false,
     touched: false,
   },
@@ -138,22 +139,32 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
                   name={formFields.userName}
                   type="text"
                   autoComplete="off"
+                  value={formState[formFields.userName].value}
                   onChange={handleChange}
                 />
                 <span className="form-review__warning">Заполните поле</span>
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div className="rate rate--reverse">
-                  <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5"/>
-                  <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                  <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4"/>
-                  <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                  <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3"/>
-                  <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                  <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2"/>
-                  <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                  <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1"/>
-                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
+                  {RATING_TITLES.map((starTitle: string, index: number) => (
+                    <>
+                      <input
+                        className="visually-hidden"
+                        type="radio"
+                        checked={index + 1 === Number(formState[formFields.rating].value)}
+                        id={`star-${index + 1}`}
+                        name="rate"
+                        value={index + 1}
+                        onChange={handleChange}
+                      />
+                      <label
+                        className="rate__label"
+                        htmlFor={`star-${index + 1}`}
+                        title={starTitle}
+                      >
+                      </label>
+                    </>
+                  )).reverse()}
                   <span className="rate__count"></span>
                   <span className="rate__message">Поставьте оценку</span>
                 </div>
@@ -171,6 +182,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
               name={formFields.advantage}
               type="text"
               autoComplete="off"
+              value={formState[formFields.advantage].value}
               onChange={handleChange}
             />
             <label
@@ -185,6 +197,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
               name={formFields.disadvantage}
               type="text"
               autoComplete="off"
+              value={formState[formFields.disadvantage].value}
               onChange={handleChange}
             />
             <label
@@ -198,6 +211,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
               id={formFields.comment}
               rows={10}
               autoComplete="off"
+              value={formState[formFields.comment].value}
               onChange={handleChange}
             >
             </textarea>
