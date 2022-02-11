@@ -196,7 +196,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
           </div>
         </main>
         <Footer/>
-        <ReviewForm isActive={isReviewModalActive} setIsReviewModalActive={setIsReviewModalActive}/>
+        <ReviewForm isActive={isReviewModalActive} setIsReviewModalActive={setIsReviewModalActive} id={id} guitarName={guitarInfo.name}/>
       </div>
     </>
   );

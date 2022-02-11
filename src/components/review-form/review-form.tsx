@@ -1,16 +1,90 @@
 import cn from 'classnames';
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useEffect, useState, ChangeEvent } from 'react';
 
 type ReviewFormProps = {
   isActive: boolean,
   setIsReviewModalActive: (isActive: boolean) => void,
+  id: string,
+  guitarName: string,
 }
 
 type KeyboardEvent = {
   key: string,
 };
 
-function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.Element {
+enum formFields {
+  userName = 'userName',
+  rating = 'rating',
+  advantage = 'advantage',
+  disadvantage = 'disadvantage',
+  comment = 'comment',
+}
+
+type FieldProps = {
+  value: string,
+  error?: boolean,
+  touched?: boolean,
+};
+
+type FormStateProps = {
+  [key: string]: FieldProps,
+};
+
+const initialState = {
+  userName: {
+    value: '',
+    error: false,
+    touched: false,
+  },
+  rating: {
+    value: '',
+    error: false,
+    touched: false,
+  },
+  advantage: {
+    value: '',
+    error: true,
+    touched: true,
+  },
+  disadvantage: {
+    value: '',
+    error: true,
+    touched: true,
+  },
+  comment: {
+    value: '',
+    error: true,
+    touched: true,
+  },
+  guitarId: {
+    value: '',
+    error: true,
+    touched: true,
+  },
+};
+
+function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFormProps): JSX.Element {
+  const [formState, setFormState] = useState<FormStateProps>(initialState);
+
+  const handleChange = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const {name, value} = target;
+    const isValid = name === formFields.userName
+      ? formState[name].value.trim() !== ''
+      : true;
+
+    setFormState({
+      ...formState,
+      [name]: {
+        value: value,
+        touched: true,
+        error: !isValid,
+      },
+    });
+
+    // eslint-disable-next-line no-console
+    console.log(formState[name]);
+  };
+
   const handleCloseButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
     evt.preventDefault();
     setIsReviewModalActive(false);
@@ -53,12 +127,20 @@ function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.El
         </div>
         <div className="modal__content">
           <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
-          <h3 className="modal__product-name title title--medium-20 title--uppercase">СURT Z30 Plus</h3>
+          <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitarName}</h3>
           <form className="form-review">
             <div className="form-review__wrapper">
               <div className="form-review__name-wrapper">
                 <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
-                <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off"/><span className="form-review__warning">Заполните поле</span>
+                <input
+                  className="form-review__input form-review__input--name"
+                  id="user-name"
+                  name={formFields.userName}
+                  type="text"
+                  autoComplete="off"
+                  onChange={handleChange}
+                />
+                <span className="form-review__warning">Заполните поле</span>
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div className="rate rate--reverse">
@@ -77,12 +159,48 @@ function ReviewForm({isActive, setIsReviewModalActive}: ReviewFormProps): JSX.El
                 </div>
               </div>
             </div>
-            <label className="form-review__label" htmlFor="user-name">Достоинства</label>
-            <input className="form-review__input" id="pros" type="text" autoComplete="off"/>
-            <label className="form-review__label" htmlFor="user-name">Недостатки</label>
-            <input className="form-review__input" id="user-name" type="text" autoComplete="off"/>
-            <label className="form-review__label" htmlFor="user-name">Комментарий</label>
-            <textarea className="form-review__input form-review__input--textarea" id="user-name" rows={10} autoComplete="off"></textarea>
+            <label
+              className="form-review__label"
+              htmlFor={formFields.advantage}
+            >
+              Достоинства
+            </label>
+            <input
+              className="form-review__input"
+              id={formFields.advantage}
+              name={formFields.advantage}
+              type="text"
+              autoComplete="off"
+              onChange={handleChange}
+            />
+            <label
+              className="form-review__label"
+              htmlFor={formFields.disadvantage}
+            >
+              Недостатки
+            </label>
+            <input
+              className="form-review__input"
+              id={formFields.disadvantage}
+              name={formFields.disadvantage}
+              type="text"
+              autoComplete="off"
+              onChange={handleChange}
+            />
+            <label
+              className="form-review__label"
+              htmlFor={formFields.comment}
+            >
+              Комментарий
+            </label>
+            <textarea
+              className="form-review__input form-review__input--textarea"
+              id={formFields.comment}
+              rows={10}
+              autoComplete="off"
+              onChange={handleChange}
+            >
+            </textarea>
             <button
               className="button button--medium-20 form-review__button"
               type="submit"
