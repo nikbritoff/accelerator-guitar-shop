@@ -1,13 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Guitar } from '../../types/guitar';
 import { GuitarInfo } from '../../types/state';
-import { loadGuitarInfoError, loadGuitarInfoSuccess, requestGuitarInfo, loadCommentsList } from '../action';
+import { loadGuitarInfoError, loadGuitarInfoSuccess, requestGuitarInfo, loadCommentsList, postingNewComment, postNewCommentSuccess } from '../action';
 
 const initialState: GuitarInfo = {
   guitarInfo: {} as Guitar,
   guitarInfoLoading: false,
   guitarInfoLoadError: false,
   commentsList: [],
+  postingNewComment: false,
+  postNewCommentSuccess: false,
 };
 
 const guitarInfo = createReducer(initialState, (builder) => {
@@ -26,6 +28,14 @@ const guitarInfo = createReducer(initialState, (builder) => {
     })
     .addCase(loadCommentsList, (state, action) => {
       state.commentsList = action.payload;
+    })
+    .addCase(postingNewComment, (state) => {
+      state.postingNewComment = true;
+      state.postNewCommentSuccess = false;
+    })
+    .addCase(postNewCommentSuccess, (state) => {
+      state.postingNewComment = false;
+      state.postNewCommentSuccess = true;
     });
 });
 

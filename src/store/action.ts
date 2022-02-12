@@ -60,3 +60,7 @@ export const loadCommentsList = createAction(
     payload: result,
   }),
 );
+
+export const postingNewComment = createAction(ActionType.PostNewComment);
+
+export  const postNewCommentSuccess = createAction(ActionType.PostNewCommentSuccess);

@@ -1,6 +1,9 @@
 import cn from 'classnames';
-import { MouseEvent, useEffect, useState, ChangeEvent } from 'react';
+import { MouseEvent, useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RATING_TITLES } from '../../const';
+import { postNewComment } from '../../store/api-actions';
+import { getPostingNewComment, getPostNewCommentSuccess } from '../../store/guitar-info/selectors';
 
 type ReviewFormProps = {
   isActive: boolean,
@@ -57,14 +60,13 @@ const initialState = {
     error: true,
     touched: true,
   },
-  guitarId: {
-    value: '',
-    error: true,
-    touched: true,
-  },
 };
 
 function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFormProps): JSX.Element {
+  const dispatch = useDispatch();
+  const isCommentPosting = useSelector(getPostingNewComment);
+  const isCommentPostedSuccess = useSelector(getPostNewCommentSuccess);
+
   const [formState, setFormState] = useState<FormStateProps>(initialState);
 
   const handleChange = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -81,9 +83,6 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
         error: !isValid,
       },
     });
-
-    // eslint-disable-next-line no-console
-    console.log(formState[name]);
   };
 
   const handleCloseButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
@@ -94,6 +93,21 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
   const handleOverlayClickHandler = ():void => {
     setIsReviewModalActive(false);
   };
+
+  const handleSubmitButton = (evt: FormEvent<HTMLFormElement>): void => {
+    evt.preventDefault();
+
+    dispatch(postNewComment({
+      userName: formState.userName.value,
+      advantage: formState.advantage.value,
+      disadvantage: formState.disadvantage.value,
+      comment: formState.comment.value,
+      rating: Number(formState.rating.value),
+      guitarId: Number(id),
+    }));
+  };
+
+  const isFormValid = Object.values(formState).every((item: FieldProps) => !item.error);
 
   useEffect(() => {
     if (isActive) {
@@ -112,6 +126,13 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
     }
   },[isActive, setIsReviewModalActive]);
 
+  useEffect(() => {
+    if (isCommentPostedSuccess) {
+      setFormState(initialState);
+      setIsReviewModalActive(false);
+    }
+  }, [isCommentPostedSuccess, setIsReviewModalActive]);
+
   return (
     <div className={cn(
       'modal',
@@ -129,7 +150,10 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
         <div className="modal__content">
           <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
           <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitarName}</h3>
-          <form className="form-review">
+          <form
+            className="form-review"
+            onSubmit={handleSubmitButton}
+          >
             <div className="form-review__wrapper">
               <div className="form-review__name-wrapper">
                 <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
@@ -141,6 +165,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
                   autoComplete="off"
                   value={formState[formFields.userName].value}
                   onChange={handleChange}
+                  disabled={isCommentPosting}
                 />
                 <span className="form-review__warning">Заполните поле</span>
               </div>
@@ -153,9 +178,10 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
                         type="radio"
                         checked={index + 1 === Number(formState[formFields.rating].value)}
                         id={`star-${index + 1}`}
-                        name="rate"
+                        name={formFields.rating}
                         value={index + 1}
                         onChange={handleChange}
+                        disabled={isCommentPosting}
                       />
                       <label
                         className="rate__label"
@@ -184,6 +210,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
               autoComplete="off"
               value={formState[formFields.advantage].value}
               onChange={handleChange}
+              disabled={isCommentPosting}
             />
             <label
               className="form-review__label"
@@ -199,6 +226,7 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
               autoComplete="off"
               value={formState[formFields.disadvantage].value}
               onChange={handleChange}
+              disabled={isCommentPosting}
             />
             <label
               className="form-review__label"
@@ -209,15 +237,18 @@ function ReviewForm({isActive, setIsReviewModalActive, id, guitarName}: ReviewFo
             <textarea
               className="form-review__input form-review__input--textarea"
               id={formFields.comment}
+              name={formFields.comment}
               rows={10}
               autoComplete="off"
               value={formState[formFields.comment].value}
               onChange={handleChange}
+              disabled={isCommentPosting}
             >
             </textarea>
             <button
               className="button button--medium-20 form-review__button"
               type="submit"
+              disabled={!isFormValid || isCommentPosting}
             >
               Отправить отзыв
             </button>

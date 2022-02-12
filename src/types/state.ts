@@ -17,6 +17,8 @@ export type GuitarInfo = {
   guitarInfoLoading: boolean,
   guitarInfoLoadError: boolean,
   commentsList: Comment[],
+  postingNewComment: boolean,
+  postNewCommentSuccess: boolean,
 }
 
 export type State = RootState;

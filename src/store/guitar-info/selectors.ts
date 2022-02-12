@@ -5,3 +5,5 @@ export const getGuitarInfo = (state: State) => state[NameSpace.GuitarInfo].guita
 export const getGuitarInfoLoading = (state: State) => state[NameSpace.GuitarInfo].guitarInfoLoading;
 export const getGuitarInfoError = (state: State) => state[NameSpace.GuitarInfo].guitarInfoLoadError;
 export const getCommentsList = (state: State) => state[NameSpace.GuitarInfo].commentsList;
+export const getPostingNewComment = (state: State) => state[NameSpace.GuitarInfo].postingNewComment;
+export const getPostNewCommentSuccess = (state: State) => state[NameSpace.GuitarInfo].postNewCommentSuccess;

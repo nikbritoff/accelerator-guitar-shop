@@ -1,10 +1,14 @@
 import { toast } from 'react-toastify';
 import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
-import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, requestGuitarInfo, requestGuitars } from './action';
+import { Comment } from '../types/comment';
+import { NewComment } from '../types/new-comment';
+import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, postingNewComment, postNewCommentSuccess, requestGuitarInfo, requestGuitars } from './action';
+import { NameSpace } from './root-reducer';
 
 const errorMessages = {
   commentsList: 'Ошибка загрузки комментариев. Повторите попытку позже.',
+  postNewComment: 'Оставить отзыв не удалось. Повторите попытку позже.',
 };
 
 export const fetchGuitarsAction = (start: number, limit: number): ThunkActionResult => (
@@ -75,6 +79,21 @@ export const fetchGuitarInfoCommentsList = (id: string): ThunkActionResult => (
     }
     catch {
       toast.warn(errorMessages.commentsList);
+    }
+  }
+);
+
+export const postNewComment = (newComment: NewComment): ThunkActionResult => (
+  async (dispatch, getState, api) => {
+    try {
+      dispatch(postingNewComment());
+      const {data} = await api.post<Comment>(`${APIRoute.Comments}`, newComment);
+      const commentsList = getState()[NameSpace.GuitarInfo].commentsList;
+      dispatch(loadCommentsList([data, ...commentsList]));
+      dispatch(postNewCommentSuccess());
+    }
+    catch {
+      toast.warn(errorMessages.postNewComment);
     }
   }
 );
