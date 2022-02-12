@@ -5,6 +5,7 @@ import { postNewCommentSuccess } from '../../store/action';
 import { postNewComment } from '../../store/api-actions';
 import { getPostingNewComment, getPostNewCommentSuccess } from '../../store/guitar-info/selectors';
 import { getFieldValidity } from '../../utils/review-form';
+import ReviewStar from '../review-star/review-star';
 
 type ReviewFormProps = {
   setIsReviewModalActive: (isActive: boolean) => void,
@@ -131,24 +132,15 @@ function ReviewForm({setIsReviewModalActive, setIsReviewModalSuccessActive, id, 
           <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
             <div className="rate rate--reverse">
               {RATING_TITLES.map((starTitle: string, index: number) => (
-                <>
-                  <input
-                    className="visually-hidden"
-                    type="radio"
-                    checked={index + 1 === Number(formState[formFields.rating].value)}
-                    id={`star-${index + 1}`}
-                    name={formFields.rating}
-                    value={index + 1}
-                    onChange={handleChange}
-                    disabled={isCommentPosting}
-                  />
-                  <label
-                    className="rate__label"
-                    htmlFor={`star-${index + 1}`}
-                    title={starTitle}
-                  >
-                  </label>
-                </>
+                <ReviewStar
+                  key={starTitle}
+                  title={starTitle}
+                  id={index + 1}
+                  name={formFields.rating}
+                  isNewCommentPosting={isCommentPosting}
+                  isChecked={index + 1 === Number(formState[formFields.rating].value)}
+                  handleChange={handleChange}
+                />
               )).reverse()}
               <span className="rate__count">
                 {formState[formFields.rating].value}
