@@ -61,6 +61,16 @@ export const loadCommentsList = createAction(
   }),
 );
 
-export const postingNewComment = createAction(ActionType.PostNewComment);
+export const postingNewComment = createAction(
+  ActionType.PostNewComment,
+  (status: boolean) => ({
+    payload: status,
+  }),
+);
 
-export  const postNewCommentSuccess = createAction(ActionType.PostNewCommentSuccess);
+export  const postNewCommentSuccess = createAction(
+  ActionType.PostNewCommentSuccess,
+  (status: boolean) => ({
+    payload: status,
+  }),
+);

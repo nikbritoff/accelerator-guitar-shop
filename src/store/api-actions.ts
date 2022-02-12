@@ -86,14 +86,15 @@ export const fetchGuitarInfoCommentsList = (id: string): ThunkActionResult => (
 export const postNewComment = (newComment: NewComment): ThunkActionResult => (
   async (dispatch, getState, api) => {
     try {
-      dispatch(postingNewComment());
+      dispatch(postingNewComment(true));
       const {data} = await api.post<Comment>(`${APIRoute.Comments}`, newComment);
       const commentsList = getState()[NameSpace.GuitarInfo].commentsList;
       dispatch(loadCommentsList([data, ...commentsList]));
-      dispatch(postNewCommentSuccess());
+      dispatch(postNewCommentSuccess(true));
     }
     catch {
       toast.warn(errorMessages.postNewComment);
+      dispatch(postingNewComment(false));
     }
   }
 );

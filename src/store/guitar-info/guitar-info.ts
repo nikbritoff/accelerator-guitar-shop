@@ -29,13 +29,13 @@ const guitarInfo = createReducer(initialState, (builder) => {
     .addCase(loadCommentsList, (state, action) => {
       state.commentsList = action.payload;
     })
-    .addCase(postingNewComment, (state) => {
-      state.postingNewComment = true;
+    .addCase(postingNewComment, (state, action) => {
+      state.postingNewComment = action.payload;
       state.postNewCommentSuccess = false;
     })
-    .addCase(postNewCommentSuccess, (state) => {
+    .addCase(postNewCommentSuccess, (state, action) => {
       state.postingNewComment = false;
-      state.postNewCommentSuccess = true;
+      state.postNewCommentSuccess = action.payload;
     });
 });
 

@@ -16,6 +16,8 @@ import cn from 'classnames';
 import Reviews from '../../components/reviews/reviews';
 import RatingStar from '../../components/rating-star/rating-star';
 import ReviewForm from '../../components/review-form/review-form';
+import WithPopupControls from '../../hocs/with-popup-controls';
+import ModalReviewSuccess from '../../components/modal-review-success/modal-review-success';
 
 type ErrorPageProps = {
   history: History,
@@ -54,7 +56,8 @@ function Guitar({history}: GuitarProps): JSX.Element {
 
   const [isDescriptionActive, setIsDescriptionActive] = useState(true);
   const [isCharacteristicsActive, setIsCharacteristicsActive] = useState(false);
-  const [isReviewModalActive, setIsReviewModalActive]= useState(false);
+  const [isReviewModalActive, setIsReviewModalActive] = useState(false);
+  const [isModalReviewSuccessActive, setIsModalReviewSuccessActive] = useState(false);
 
   const descriptionTabClickHandler = (evt: MouseEvent<HTMLAnchorElement>): void => {
     evt.preventDefault();
@@ -196,7 +199,27 @@ function Guitar({history}: GuitarProps): JSX.Element {
           </div>
         </main>
         <Footer/>
-        <ReviewForm isActive={isReviewModalActive} setIsReviewModalActive={setIsReviewModalActive} id={id} guitarName={guitarInfo.name}/>
+        <WithPopupControls
+          modalClass={'modal--review'}
+          isActive={isReviewModalActive}
+          setIsModalActive={setIsReviewModalActive}
+        >
+          <ReviewForm
+            setIsReviewModalActive={setIsReviewModalActive}
+            setIsReviewModalSuccessActive={setIsModalReviewSuccessActive}
+            id={id}
+            guitarName={guitarInfo.name}
+          />
+        </WithPopupControls>
+        <WithPopupControls
+          modalClass={'modal--success'}
+          isActive={isModalReviewSuccessActive}
+          setIsModalActive={setIsModalReviewSuccessActive}
+        >
+          <ModalReviewSuccess
+            setIsModalReviewSuccessActive={setIsModalReviewSuccessActive}
+          />
+        </WithPopupControls>
       </div>
     </>
   );
