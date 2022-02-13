@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Screen } from '../const';
 import { ActionType } from '../types/action';
+import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
 
 export const requestGuitars = createAction(ActionType.RequestGuitars);
@@ -39,5 +40,37 @@ export const loadMinMaxPrices = createAction(
   ActionType.LoadMinMaxPrices,
   (result: Guitar[]) => ({
     payload: result,
+  }),
+);
+
+export const requestGuitarInfo = createAction(ActionType.RequestGuitarInfo);
+
+export const loadGuitarInfoSuccess = createAction(
+  ActionType.LoadGuitarInfoSuccess,
+  (guitarInfo: Guitar) => ({
+    payload: guitarInfo,
+  }),
+);
+
+export const loadGuitarInfoError = createAction(ActionType.LoadGuitarInfoError);
+
+export const loadCommentsList = createAction(
+  ActionType.LoadCommentsList,
+  (result: Comment[]) => ({
+    payload: result,
+  }),
+);
+
+export const postingNewComment = createAction(
+  ActionType.PostNewComment,
+  (status: boolean) => ({
+    payload: status,
+  }),
+);
+
+export  const postNewCommentSuccess = createAction(
+  ActionType.PostNewCommentSuccess,
+  (status: boolean) => ({
+    payload: status,
   }),
 );

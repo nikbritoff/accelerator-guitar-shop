@@ -1,5 +1,6 @@
-import { company, datatype, finance, image, random } from 'faker';
+import { company, datatype, finance, image, random, name } from 'faker';
 import { GUITARS } from '../const';
+import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
 
 export const makeFakeGuitar = (): Guitar => {
@@ -20,6 +21,23 @@ export const makeFakeGuitar = (): Guitar => {
 
 export const makeFakeGuitarsList = (amount = 9): Guitar[] => {
   const list = new Array(amount).fill('').map((element) => element = makeFakeGuitar());
+
+  return list;
+};
+
+export const makeFakeComment = (): Comment => ({
+  id: datatype.string(),
+  userName: name.firstName(),
+  advantage: random.words(),
+  disadvantage: random.words(),
+  comment: random.words(),
+  rating: Math.random() * (6 - 1) + 1,
+  createAt: String(datatype.datetime()),
+  guitarId: datatype.number(),
+});
+
+export const makeFakeCommentsList = (amount = 5): Comment[] => {
+  const list = new Array(amount).fill('').map((element) => element = makeFakeComment());
 
   return list;
 };

@@ -1,4 +1,5 @@
 import { RootState } from '../store/root-reducer';
+import { Comment } from './comment';
 import { Guitar } from './guitar';
 
 export type GuitarsData = {
@@ -10,5 +11,14 @@ export type GuitarsData = {
   minPrice: number,
   maxPrice: number,
 };
+
+export type GuitarInfo = {
+  guitarInfo: Guitar,
+  guitarInfoLoading: boolean,
+  guitarInfoLoadError: boolean,
+  commentsList: Comment[],
+  postingNewComment: boolean,
+  postNewCommentSuccess: boolean,
+}
 
 export type State = RootState;

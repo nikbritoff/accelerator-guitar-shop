@@ -6,10 +6,11 @@ import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Screen } from '../../const';
 import { makeFakeGuitarsList } from '../../utils/mock';
+import thunk from 'redux-thunk';
 
 const mockGuitars = makeFakeGuitarsList();
 
-const mockStore = configureMockStore();
+const mockStore = configureMockStore([thunk]);
 const history = createMemoryHistory();
 const store = mockStore({
   APP: {

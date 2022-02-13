@@ -6,12 +6,11 @@ import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Screen } from '../../const';
 import { makeFakeGuitarsList } from '../../utils/mock';
+import thunk from 'redux-thunk';
 
 const mockGuitars = makeFakeGuitarsList();
-const minPrice = mockGuitars[0];
-const maxPrice = mockGuitars[mockGuitars.length - 1];
 
-const mockStore = configureMockStore();
+const mockStore = configureMockStore([thunk]);
 const history = createMemoryHistory();
 const store = mockStore({
   APP: {
@@ -34,6 +33,4 @@ test('Renders filter-component', () => {
   );
 
   expect(screen.getByText(/Фильтр/i)).toBeInTheDocument();
-  expect(screen.getByPlaceholderText(String(minPrice))).toBeInTheDocument();
-  expect(screen.getByPlaceholderText(String(maxPrice))).toBeInTheDocument();
 });

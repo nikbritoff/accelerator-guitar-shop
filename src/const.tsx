@@ -1,4 +1,5 @@
 export enum AppRoute {
+  Main = '/',
   Catalog = '/catalog',
   Guitar = '/catalog/:id',
   NotFoud = '/404',
@@ -8,6 +9,7 @@ export const COUNT_TOKEN_NAME = 'x-total-count';
 
 export enum APIRoute {
   Guitars = '/guitars',
+  Comments = '/comments',
 }
 
 export const ratingValues = [
@@ -30,6 +32,13 @@ export enum CatalogSettings {
   GuitarsLimit = 9,
   StartPage = 1,
 }
+
+export enum CommentsListSettings {
+  StartIndex = 0,
+  ShownStep = 3,
+}
+
+export const COMMENTS_SHOWN_STEP = 3;
 
 export enum SortingOrder {
   Increase = 'asc',
@@ -72,4 +81,27 @@ export const GUITARS = [
     type: 'ukulele',
     strings: [4],
   },
+];
+
+export const GuitarType = {
+  Acoustic: {
+    Eng: 'acoustic',
+    Ru: 'Акустическая',
+  },
+  Electric: {
+    Eng: 'electric',
+    Ru: 'Электрогитара',
+  },
+  Ukulele: {
+    Eng: 'ukulele',
+    Ru: 'Укулеле',
+  },
+};
+
+export const RATING_TITLES = [
+  'Ужасно',
+  'Плохо',
+  'Нормально',
+  'Хорошо',
+  'Отлично',
 ];
