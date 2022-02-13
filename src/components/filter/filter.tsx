@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { createApiURL, createApiURLForMinMaxPrices } from '../../utils/api';
 import queryString from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetcDataAction, fetchMinMaxPrice } from '../../store/api-actions';
+import { fetchDataAction, fetchMinMaxPrice } from '../../store/api-actions';
 import { History } from 'history';
 import { CatalogSettings, GUITARS, queryParamName } from '../../const';
 import { getAvailableStrings } from '../../utils/filter';
@@ -219,7 +219,7 @@ function Filter({ history }: FilterProps): JSX.Element {
     const page = queryString.parse(search).page;
 
     const url = createApiURL(queryParams.toString(), Number(page));
-    dispatch(fetcDataAction(url));
+    dispatch(fetchDataAction(url));
 
     // Запрос цен для плейсхолдеров
     const urlForPrice = createApiURLForMinMaxPrices(queryParams.toString());
