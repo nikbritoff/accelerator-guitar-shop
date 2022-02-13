@@ -38,8 +38,6 @@ export enum CommentsListSettings {
   ShownStep = 3,
 }
 
-export const COMMENTS_SHOWN_STEP = 3;
-
 export enum SortingOrder {
   Increase = 'asc',
   Decrease = 'desc',

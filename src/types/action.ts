@@ -1,4 +1,4 @@
-import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { ThunkAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { State } from './state';
 import { Action } from 'redux';
@@ -20,4 +20,3 @@ export enum ActionType {
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
-export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Action>;

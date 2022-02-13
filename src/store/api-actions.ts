@@ -25,7 +25,7 @@ export const fetchGuitarsAction = (start: number, limit: number): ThunkActionRes
   }
 );
 
-export const fetcDataAction = (url: string): ThunkActionResult => (
+export const fetchDataAction = (url: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
       dispatch(requestGuitars());

@@ -13,7 +13,7 @@ import { AppRoute } from '../../const';
 import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/guitars/selectors';
 import queryString from 'query-string';
 import { History } from 'history';
-import { fetcDataAction } from '../../store/api-actions';
+import { fetchDataAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { createApiURL } from '../../utils/api';
 
@@ -55,7 +55,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
   const url = createApiURL(queryParams.toString(), Number(page));
 
   useEffect(() => {
-    dispatch(fetcDataAction(url));
+    dispatch(fetchDataAction(url));
   }, [dispatch, url]);
 
   if (guitarsError) {

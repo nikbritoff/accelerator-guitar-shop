@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { History } from 'history';
 import { createApiURL } from '../../utils/api';
 import { useDispatch } from 'react-redux';
-import { fetcDataAction } from '../../store/api-actions';
+import { fetchDataAction } from '../../store/api-actions';
 
 type SortingProps = {
   history: History,
@@ -51,7 +51,7 @@ function Sorting({history}: SortingProps): JSX.Element {
     });
 
     const url = createApiURL(queryParams.toString());
-    dispatch(fetcDataAction(url));
+    dispatch(fetchDataAction(url));
   }, [dispatch, history, queryParams, sortingType, sortingOrder]);
 
   return (
