@@ -32,6 +32,5 @@ test('Renders cardsList-component', () => {
   mockGuitars.forEach((guitar) => {
     expect(screen.getByText(guitar.price)).toBeInTheDocument();
     expect(screen.getByText(guitar.name)).toBeInTheDocument();
-    expect(screen.getByText('Подробнее')).toBeInTheDocument();
   });
 });
