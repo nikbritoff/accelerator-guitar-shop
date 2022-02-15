@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchResults } from '../../store/guitars/selectors';
 import styles from './search.module.css';
@@ -10,7 +10,7 @@ import queryString from 'query-string';
 
 type SearchProps = {
   history: History,
-}
+};
 
 type KeyboardEvent = {
   key: string,
@@ -21,6 +21,9 @@ function Search({history}: SearchProps): JSX.Element {
   const searchResults = useSelector(getSearchResults);
 
   const [focused, setFocused] = useState(false);
+
+  const formRef = useRef<HTMLDivElement>(null);
+
   const handleFocus = (): void => setFocused(true);
   const handleBlur = (): void => setFocused(false);
 
@@ -47,9 +50,24 @@ function Search({history}: SearchProps): JSX.Element {
     }
   }, [dispatch, value]);
 
+  useEffect(() => {
+    const handleDocumentClick = (evt: MouseEvent): void => {
+      if (!formRef.current?.contains(evt.target as HTMLElement)) {
+        setFocused(false);
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+
+  }, [setFocused]);
+
   return (
     <div className="form-search"
-      onMouseLeave={handleBlur}
+      ref={formRef}
     >
       <form
         className="form-search__form"

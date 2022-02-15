@@ -9,13 +9,14 @@ import Loading from '../../components/loading/loading';
 import LoadingError from '../../components/loading-error/loading-error';
 import Pagination from '../../components/pagination/pagination';
 import Sorting from '../../components/sorting/sorting';
-import { AppRoute } from '../../const';
+import { AppRoute, Screen } from '../../const';
 import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/guitars/selectors';
 import queryString from 'query-string';
 import { History } from 'history';
 import { fetchDataAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { createApiURL } from '../../utils/api';
+import { changeScreen } from '../../store/action';
 
 type ErrorPageProps = {
   history: History,
@@ -56,6 +57,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchDataAction(url));
+    dispatch(changeScreen(Screen.Catalog));
   }, [dispatch, url]);
 
   if (guitarsError) {
