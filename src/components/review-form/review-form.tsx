@@ -142,9 +142,7 @@ function ReviewForm({setIsReviewModalActive, setIsReviewModalSuccessActive, id, 
                   handleChange={handleChange}
                 />
               )).reverse()}
-              <span className="rate__count">
-                {formState[formFields.rating].value}
-              </span>
+              <span className="rate__count"></span>
               {!formState[formFields.rating].touched &&
               <span className="rate__message">Поставьте оценку</span>}
             </div>
