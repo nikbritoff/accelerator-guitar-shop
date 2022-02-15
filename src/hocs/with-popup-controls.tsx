@@ -48,17 +48,17 @@ function WithPopupControls({children, modalClass, isActive, setIsModalActive, ch
       {'is-active' : isActive},
     )}
     >
-      <div className="modal__wrapper">
-        <div
-          className="modal__overlay"
-          data-close-modal
-          onClick={handleOverlayClickHandler}
-        >
-        </div>
-        <FocusTrap
-          active={isActive}
-          focusTrapOptions={{fallbackFocus: checkElement}}
-        >
+      <FocusTrap
+        active={isActive}
+        focusTrapOptions={{fallbackFocus: checkElement}}
+      >
+        <div className="modal__wrapper">
+          <div
+            className="modal__overlay"
+            data-close-modal
+            onClick={handleOverlayClickHandler}
+          >
+          </div>
           <div className="modal__content">
             {children}
             <button
@@ -71,8 +71,8 @@ function WithPopupControls({children, modalClass, isActive, setIsModalActive, ch
               <span className="modal__close-btn-interactive-area"></span>
             </button>
           </div>
-        </FocusTrap>
-      </div>
+        </div>
+      </FocusTrap>
     </div>
   );
 }
