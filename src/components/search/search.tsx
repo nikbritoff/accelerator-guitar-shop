@@ -12,6 +12,10 @@ type SearchProps = {
   history: History,
 }
 
+type KeyboardEvent = {
+  key: string,
+};
+
 function Search({history}: SearchProps): JSX.Element {
   const dispatch = useDispatch();
   const searchResults = useSelector(getSearchResults);
@@ -88,6 +92,11 @@ function Search({history}: SearchProps): JSX.Element {
             }}
             onClick={() => {
               history.push(`/catalog/${guitar.id}`);
+            }}
+            onKeyDown={(evt: KeyboardEvent) => {
+              if (evt.key === 'Enter') {
+                history.push(`/catalog/${guitar.id}`);
+              }
             }}
           >
             {guitar.name}
