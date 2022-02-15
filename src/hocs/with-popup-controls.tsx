@@ -44,7 +44,7 @@ function WithPopupControls({children, modalClass, isActive, setIsModalActive, ch
   return (
     <div className={cn(
       'modal',
-      {modalClass},
+      modalClass,
       {'is-active' : isActive},
     )}
     >
