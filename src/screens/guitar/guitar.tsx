@@ -8,7 +8,7 @@ import IconsList from '../../components/icons-list/icons-list';
 import LoadingError from '../../components/loading-error/loading-error';
 import Loading from '../../components/loading/loading';
 import { AppRoute, ratingValues, Screen } from '../../const';
-import { changeScreen } from '../../store/action';
+import { changeScreen, loadSearchResultsSuccess } from '../../store/action';
 import { fetchGuitarInfo, fetchGuitarInfoCommentsList } from '../../store/api-actions';
 import { getCommentsList, getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
 import { translateType } from '../../utils/guitar-info';
@@ -75,6 +75,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
     dispatch(fetchGuitarInfo(id));
     dispatch(fetchGuitarInfoCommentsList(id));
     dispatch(changeScreen(Screen.Other));
+    dispatch(loadSearchResultsSuccess([]));
     window.scrollTo({top: 0});
   }, [dispatch, id]);
 
