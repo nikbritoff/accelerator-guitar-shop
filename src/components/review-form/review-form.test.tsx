@@ -33,6 +33,8 @@ test('Renders modal-review-form-component', () => {
           setIsReviewModalSuccessActive={jest.fn}
           id={mockProps.id}
           guitarName={mockProps.guitarName}
+          setShownCommentsAmount={jest.fn}
+          shownCommentsAmount={3}
         />
       </Router>
     </Provider>,

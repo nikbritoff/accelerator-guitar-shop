@@ -12,6 +12,8 @@ type ReviewFormProps = {
   setIsReviewModalSuccessActive: (isActive: boolean) => void,
   id: string,
   guitarName: string,
+  shownCommentsAmount: number,
+  setShownCommentsAmount: (amount: number) => void,
 }
 
 export enum formFields {
@@ -60,7 +62,7 @@ const initialState = {
   },
 };
 
-function ReviewForm({setIsReviewModalActive, setIsReviewModalSuccessActive, id, guitarName}: ReviewFormProps): JSX.Element {
+function ReviewForm({setIsReviewModalActive, setIsReviewModalSuccessActive, id, guitarName, shownCommentsAmount, setShownCommentsAmount}: ReviewFormProps): JSX.Element {
   const dispatch = useDispatch();
   const isCommentPosting = useSelector(getPostingNewComment);
   const isCommentPostedSuccess = useSelector(getPostNewCommentSuccess);
@@ -102,8 +104,20 @@ function ReviewForm({setIsReviewModalActive, setIsReviewModalSuccessActive, id, 
       setFormState(initialState);
       setIsReviewModalActive(false);
       setIsReviewModalSuccessActive(true);
+
+      if (shownCommentsAmount < 3) {
+        setShownCommentsAmount(shownCommentsAmount + 1);
+      }
     }
-  }, [dispatch, isCommentPostedSuccess, setIsReviewModalActive, setIsReviewModalSuccessActive]);
+  },
+  [
+    dispatch,
+    isCommentPostedSuccess,
+    setIsReviewModalActive,
+    setIsReviewModalSuccessActive,
+    setShownCommentsAmount,
+    shownCommentsAmount,
+  ]);
 
   return (
     <>
