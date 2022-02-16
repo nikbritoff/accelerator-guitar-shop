@@ -7,7 +7,7 @@ import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
 import LoadingError from '../../components/loading-error/loading-error';
 import Loading from '../../components/loading/loading';
-import { AppRoute, ratingValues, Screen } from '../../const';
+import { AppRoute, CommentsListSettings, ratingValues, Screen } from '../../const';
 import { changeScreen, loadSearchResultsSuccess } from '../../store/action';
 import { fetchGuitarInfo, fetchGuitarInfoCommentsList } from '../../store/api-actions';
 import { getCommentsList, getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
@@ -58,6 +58,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
   const [isCharacteristicsActive, setIsCharacteristicsActive] = useState(false);
   const [isReviewModalActive, setIsReviewModalActive] = useState(false);
   const [isModalReviewSuccessActive, setIsModalReviewSuccessActive] = useState(false);
+  const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
 
   const descriptionTabClickHandler = (evt: MouseEvent<HTMLAnchorElement>): void => {
     evt.preventDefault();
@@ -196,7 +197,12 @@ function Guitar({history}: GuitarProps): JSX.Element {
                 </a>
               </div>
             </div>
-            {commentsList.length > 0 && <Reviews commentsList={commentsList} setIsReviewModalActive={setIsReviewModalActive}/>}
+            <Reviews
+              commentsList={commentsList}
+              setIsReviewModalActive={setIsReviewModalActive}
+              setShownCommentsAmount={setShownCommentsAmount}
+              shownCommentsAmount={shownCommentsAmount}
+            />
           </div>
         </main>
         <Footer/>
@@ -210,6 +216,8 @@ function Guitar({history}: GuitarProps): JSX.Element {
             setIsReviewModalSuccessActive={setIsModalReviewSuccessActive}
             id={id}
             guitarName={guitarInfo.name}
+            setShownCommentsAmount={setShownCommentsAmount}
+            shownCommentsAmount={shownCommentsAmount}
           />
         </WithPopupControls>
         <WithPopupControls

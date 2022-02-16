@@ -9,6 +9,8 @@ test('Renders reviews-component', () => {
     <Reviews
       setIsReviewModalActive={jest.fn}
       commentsList={mockCommentsList}
+      setShownCommentsAmount={jest.fn()}
+      shownCommentsAmount={3}
     />,
   );
 

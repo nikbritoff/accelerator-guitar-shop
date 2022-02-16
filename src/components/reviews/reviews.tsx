@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import { CommentsListSettings, ratingValues } from '../../const';
 import { Comment } from '../../types/comment';
 import cn from 'classnames';
@@ -9,10 +9,11 @@ import RatingStar from '../rating-star/rating-star';
 type ReviewsProps = {
   commentsList: Comment[],
   setIsReviewModalActive: (isActive: boolean) => void,
+  shownCommentsAmount: number,
+  setShownCommentsAmount: (amount: number) => void,
 }
 
-function Reviews({commentsList, setIsReviewModalActive}: ReviewsProps): JSX.Element {
-  const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
+function Reviews({commentsList, setIsReviewModalActive, shownCommentsAmount, setShownCommentsAmount}: ReviewsProps): JSX.Element {
 
   const handleMoreCommentsButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
     evt.preventDefault();
