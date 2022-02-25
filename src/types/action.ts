@@ -5,6 +5,9 @@ import { Action } from 'redux';
 
 export enum ActionType {
   ChangeScreen = 'app/changeScreen',
+  AddOrderItem = 'app/addOrderItem',
+  DeleteOrderItem = 'app/deleteOrderItem',
+  ChangeOrderItemAmount = 'app/changeOrderItemAmount',
   RequestGuitars = 'guitars/request',
   LoadGuitarsSuccess = 'guitars/loadSuccess',
   LoadGuitarsError = 'guitars/loadError',

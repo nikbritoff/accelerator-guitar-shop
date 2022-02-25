@@ -98,3 +98,17 @@ export const postNewComment = (newComment: NewComment): ThunkActionResult => (
     }
   }
 );
+
+export const postOrder = (): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    try {
+      const responce = await api.post(`${APIRoute.Orders}`, {guitarsIds: [5, 1], coupon: null});
+      // eslint-disable-next-line no-console
+      console.log(responce);
+    }
+    catch {
+      // eslint-disable-next-line no-console
+      console.log('error');
+    }
+  }
+);

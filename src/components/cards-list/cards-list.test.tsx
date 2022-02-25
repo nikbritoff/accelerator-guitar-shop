@@ -24,7 +24,7 @@ test('Renders cardsList-component', () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CardsList guitarsList={mockGuitars}/>
+        <CardsList guitarsList={mockGuitars} setGuitarForCart={jest.fn} setIsModalAddToCartActive={jest.fn}/>
       </Router>
     </Provider>,
   );

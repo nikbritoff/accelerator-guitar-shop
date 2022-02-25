@@ -1,6 +1,13 @@
+import { Screen } from '../const';
 import { RootState } from '../store/root-reducer';
 import { Comment } from './comment';
 import { Guitar } from './guitar';
+import { Order } from './order';
+
+export type AppInfo = {
+  currentScreen: Screen,
+  cart: Order[],
+}
 
 export type GuitarsData = {
   guitarsList: Guitar[],

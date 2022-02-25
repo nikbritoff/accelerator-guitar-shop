@@ -3,19 +3,19 @@ import ProductCard from '../product-card/product-card';
 
 type CardsListProps = {
   guitarsList: Guitar[],
+  setGuitarForCart: (guitar: Guitar) => void,
+  setIsModalAddToCartActive: (isActive: boolean) => void,
 }
 
-function CardsList({guitarsList}: CardsListProps): JSX.Element {
+function CardsList({guitarsList, setGuitarForCart, setIsModalAddToCartActive}: CardsListProps): JSX.Element {
   return (
     <div className="cards catalog__cards">
       {guitarsList.map((guitar: Guitar): JSX.Element => (
         <ProductCard
           key={guitar.id}
-          name={guitar.name}
-          previewImg={guitar.previewImg}
-          rating={guitar.rating}
-          price={guitar.price}
-          id={guitar.id}
+          guitar={guitar}
+          setGuitarForCart={setGuitarForCart}
+          setIsModalAddToCartActive={setIsModalAddToCartActive}
         />
       ))}
     </div>

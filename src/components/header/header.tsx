@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, Screen } from '../../const';
-import { getCurrentScreen } from '../../store/app-state/selectors';
+import { getCart, getCurrentScreen } from '../../store/app-state/selectors';
 import Search from '../search/search';
 import cn from 'classnames';
 import { changeScreen } from '../../store/action';
@@ -14,6 +14,8 @@ type HeaderProps = {
 function Header({history} : HeaderProps): JSX.Element {
   const dispatch = useDispatch();
   const currentScreen = useSelector(getCurrentScreen);
+  const cart = useSelector(getCart);
+  const totalOrderItemsAmount = cart.reduce((acc, item) => acc + item.amount, 0);
 
   const handleLinkClick = (screen: Screen) => {
     dispatch(changeScreen(screen));
@@ -70,12 +72,12 @@ function Header({history} : HeaderProps): JSX.Element {
           </ul>
         </nav>
         <Search history={history}/>
-        <Link className="header__cart-link" to={AppRoute.NotFoud} aria-label="Корзина">
+        <Link className="header__cart-link" to={AppRoute.Cart} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
           <span className="visually-hidden">Перейти в корзину</span>
-          <span className="header__cart-count">2</span>
+          {totalOrderItemsAmount > 0 && <span className="header__cart-count">{totalOrderItemsAmount}</span>}
         </Link>
       </div>
     </header>
