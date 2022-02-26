@@ -1,14 +1,17 @@
 import { ChangeEvent, useState, MouseEvent, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeOrderItemAmount, deleteOrderItem } from '../../store/action';
+import { changeOrderItemAmount } from '../../store/action';
+import { Guitar } from '../../types/guitar';
 import { Order } from '../../types/order';
 import { translateType } from '../../utils/guitar-info';
 
 type CartItemProps = {
   order: Order,
+  setGuitarForRemoveFromCart: (guitar: Guitar) => void,
+  setIsModaRemoveFromCartActive: (isActive: boolean) => void,
 }
 
-function CartItem ({order: {guitar, amount}}: CartItemProps): JSX.Element {
+function CartItem ({order: {guitar, amount}, setGuitarForRemoveFromCart, setIsModaRemoveFromCartActive}: CartItemProps): JSX.Element {
   const {
     name,
     vendorCode,
@@ -24,7 +27,8 @@ function CartItem ({order: {guitar, amount}}: CartItemProps): JSX.Element {
   const [guitarAmount, setGuitarAmount] = useState(amount);
 
   const handleButtonDeleteClick = () => {
-    dispatch(deleteOrderItem(guitar));
+    setGuitarForRemoveFromCart(guitar);
+    setIsModaRemoveFromCartActive(true);
   };
 
   const handleAmountChange = (evt: ChangeEvent<HTMLInputElement>): void => {
@@ -42,7 +46,8 @@ function CartItem ({order: {guitar, amount}}: CartItemProps): JSX.Element {
     }
 
     if (guitarAmount === 1) {
-      dispatch(deleteOrderItem(guitar));
+      setGuitarForRemoveFromCart(guitar);
+      setIsModaRemoveFromCartActive(true);
     }
   };
 

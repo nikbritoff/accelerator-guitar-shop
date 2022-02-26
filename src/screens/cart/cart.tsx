@@ -1,15 +1,18 @@
 import { History } from 'history';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartItem from '../../components/cart-item/cart-item';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import IconsList from '../../components/icons-list/icons-list';
+import ModalRemoveFromCart from '../../components/modal-remove-from-cart/modal-remove-from-cart';
 import { AppRoute, Screen } from '../../const';
+import WithPopupControls from '../../hocs/with-popup-controls';
 import { changeScreen } from '../../store/action';
 import { postOrder } from '../../store/api-actions';
 import { getCart } from '../../store/app-state/selectors';
+import { Guitar } from '../../types/guitar';
 
 type CartProps = {
   history: History,
@@ -19,6 +22,9 @@ function Cart({history}: CartProps): JSX.Element {
   const dispatch = useDispatch();
 
   const cart = useSelector(getCart);
+
+  const [isModaRemoveFromCartActive, setIsModaRemoveFromCartActive] = useState(false);
+  const [guitarForRemoveFromCart, setGuitarForRemoveFromCart] = useState({} as Guitar);
 
   useEffect(() => {
     dispatch(changeScreen(Screen.Other));
@@ -50,7 +56,12 @@ function Cart({history}: CartProps): JSX.Element {
 
             <div className="cart">
               {cart.map((order) => (
-                <CartItem key={order.guitar.id} order={order}/>
+                <CartItem
+                  key={order.guitar.id}
+                  order={order}
+                  setGuitarForRemoveFromCart={setGuitarForRemoveFromCart}
+                  setIsModaRemoveFromCartActive={setIsModaRemoveFromCartActive}
+                />
               ))}
 
               <div className="cart__footer">
@@ -79,6 +90,16 @@ function Cart({history}: CartProps): JSX.Element {
         </main>
         <Footer/>
       </div>
+      <WithPopupControls
+        modalClass={''}
+        isActive={isModaRemoveFromCartActive}
+        setIsModalActive={setIsModaRemoveFromCartActive}
+      >
+        <ModalRemoveFromCart
+          setIsModaRemoveFromCartActive={setIsModaRemoveFromCartActive}
+          guitar={guitarForRemoveFromCart}
+        />
+      </WithPopupControls>
     </>
   );
 }
