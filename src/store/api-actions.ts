@@ -3,7 +3,7 @@ import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
 import { Comment } from '../types/comment';
 import { NewComment } from '../types/new-comment';
-import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, postingNewComment, postNewCommentSuccess, requestGuitarInfo, requestGuitars } from './action';
+import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, postingNewComment, postNewCommentSuccess, requestGuitarInfo, requestGuitars, setDiscount } from './action';
 import { NameSpace } from './root-reducer';
 
 const errorMessages = {
@@ -99,16 +99,22 @@ export const postNewComment = (newComment: NewComment): ThunkActionResult => (
   }
 );
 
-export const postOrder = (): ThunkActionResult => (
+export const checkCoupon = (coupon: string): ThunkActionResult => (
   async (dispatch, _, api) => {
     try {
-      const responce = await api.post(`${APIRoute.Orders}`, {guitarsIds: [5, 1], coupon: null});
-      // eslint-disable-next-line no-console
-      console.log(responce);
+      const {data} = await api.post(`${APIRoute.Coupons}`, {coupon: coupon});
+      dispatch(setDiscount({
+        isActive: true,
+        percent: data,
+        coupon: coupon,
+      }));
     }
     catch {
-      // eslint-disable-next-line no-console
-      console.log('error');
+      dispatch(setDiscount({
+        isActive: false,
+        percent: 0,
+        coupon: '',
+      }));
     }
   }
 );

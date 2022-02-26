@@ -1,12 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Screen } from '../../const';
 import { AppInfo } from '../../types/state';
-import { addOrderItem, changeOrderItemAmount, changeScreen, deleteOrderItem } from '../action';
+import { addOrderItem, changeOrderItemAmount, changeScreen, deleteOrderItem, setDiscount } from '../action';
 
 
 const initialState: AppInfo = {
   currentScreen: Screen.Main,
   cart: [],
+  discount: {
+    isActive: false,
+    percent: 0,
+    coupon: '',
+  },
 };
 
 const appState = createReducer(initialState, (builder) => {
@@ -29,6 +34,9 @@ const appState = createReducer(initialState, (builder) => {
     .addCase(changeOrderItemAmount, (state, action) => {
       const index = state.cart.findIndex((item) => item.guitar.id === action.payload.guitar.id);
       state.cart[index].amount = action.payload.amount;
+    })
+    .addCase(setDiscount, (state, action) => {
+      state.discount = action.payload;
     });
 });
 

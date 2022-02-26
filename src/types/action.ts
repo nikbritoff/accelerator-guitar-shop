@@ -8,6 +8,7 @@ export enum ActionType {
   AddOrderItem = 'app/addOrderItem',
   DeleteOrderItem = 'app/deleteOrderItem',
   ChangeOrderItemAmount = 'app/changeOrderItemAmount',
+  SetDiscount = 'app/setDiscount',
   RequestGuitars = 'guitars/request',
   LoadGuitarsSuccess = 'guitars/loadSuccess',
   LoadGuitarsError = 'guitars/loadError',

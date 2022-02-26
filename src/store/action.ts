@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { Screen } from '../const';
 import { ActionType } from '../types/action';
 import { Comment } from '../types/comment';
+import { Discount } from '../types/discount';
 import { Guitar } from '../types/guitar';
 
 export const changeScreen = createAction(
@@ -27,6 +28,13 @@ export const deleteOrderItem = createAction(
     payload: {
       guitar,
     },
+  }),
+);
+
+export const setDiscount = createAction(
+  ActionType.SetDiscount,
+  (discount: Discount) => ({
+    payload: discount,
   }),
 );
 
