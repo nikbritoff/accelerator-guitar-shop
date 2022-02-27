@@ -12,7 +12,6 @@ export enum APIRoute {
   Guitars = '/guitars',
   Comments = '/comments',
   Coupons = '/coupons',
-  // Orders = '/orders',
 }
 
 export const ratingValues = [
