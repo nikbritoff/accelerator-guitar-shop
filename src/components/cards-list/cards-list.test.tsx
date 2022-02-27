@@ -5,15 +5,20 @@ import CardsList from './cards-list';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Screen } from '../../const';
-import { makeFakeGuitarsList } from '../../utils/mock';
+import { makeFakeGuitar, makeFakeGuitarsList } from '../../utils/mock';
 
 const mockGuitars = makeFakeGuitarsList();
+const mockGuitarIndo = makeFakeGuitar();
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 const store = mockStore({
   APP: {
     currentScreen: Screen.Catalog,
+    cart: [{
+      guitar: mockGuitarIndo,
+      amount: 1,
+    }],
   },
   GUITARS: {
     guitarsList: mockGuitars,
