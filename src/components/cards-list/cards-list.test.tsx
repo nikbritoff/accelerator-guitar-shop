@@ -8,7 +8,7 @@ import { Screen } from '../../const';
 import { makeFakeGuitar, makeFakeGuitarsList } from '../../utils/mock';
 
 const mockGuitars = makeFakeGuitarsList();
-const mockGuitarIndo = makeFakeGuitar();
+const mockGuitarInfo = makeFakeGuitar();
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -16,7 +16,7 @@ const store = mockStore({
   APP: {
     currentScreen: Screen.Catalog,
     cart: [{
-      guitar: mockGuitarIndo,
+      guitar: mockGuitarInfo,
       amount: 1,
     }],
   },
