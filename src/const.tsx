@@ -2,6 +2,7 @@ export enum AppRoute {
   Main = '/',
   Catalog = '/catalog',
   Guitar = '/catalog/:id',
+  Cart = '/cart',
   NotFoud = '/404',
 }
 
@@ -10,6 +11,8 @@ export const COUNT_TOKEN_NAME = 'x-total-count';
 export enum APIRoute {
   Guitars = '/guitars',
   Comments = '/comments',
+  Coupons = '/coupons',
+  // Orders = '/orders',
 }
 
 export const ratingValues = [

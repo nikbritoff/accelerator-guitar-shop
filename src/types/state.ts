@@ -1,6 +1,15 @@
+import { Screen } from '../const';
 import { RootState } from '../store/root-reducer';
 import { Comment } from './comment';
+import { Discount } from './discount';
 import { Guitar } from './guitar';
+import { Order } from './order';
+
+export type AppInfo = {
+  currentScreen: Screen,
+  cart: Order[],
+  discount: Discount,
+}
 
 export type GuitarsData = {
   guitarsList: Guitar[],

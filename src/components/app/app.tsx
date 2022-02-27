@@ -1,6 +1,7 @@
 import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
 import browserHistory from '../../browser-history';
 import { AppRoute } from '../../const';
+import Cart from '../../screens/cart/cart';
 import Catalog from '../../screens/catalog/catalog';
 import Guitar from '../../screens/guitar/guitar';
 import NotFound from '../../screens/not-found/not-found';
@@ -17,6 +18,9 @@ function App(): JSX.Element {
         </Route>
         <Route exact path={AppRoute.Guitar}>
           <Guitar history={browserHistory}/>
+        </Route>
+        <Route exact path={AppRoute.Cart}>
+          <Cart history={browserHistory}/>
         </Route>
         <Route>
           <NotFound history={browserHistory}/>

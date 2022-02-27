@@ -11,6 +11,7 @@ const history = createMemoryHistory();
 const store = mockStore({
   APP: {
     currentScreen: Screen.Other,
+    cart: [],
   },
   GUITARS: {
     searchResults: [],

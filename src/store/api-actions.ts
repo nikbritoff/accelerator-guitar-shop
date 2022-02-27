@@ -3,7 +3,7 @@ import { APIRoute, COUNT_TOKEN_NAME, queryParamName } from '../const';
 import {  ThunkActionResult } from '../types/action';
 import { Comment } from '../types/comment';
 import { NewComment } from '../types/new-comment';
-import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, postingNewComment, postNewCommentSuccess, requestGuitarInfo, requestGuitars } from './action';
+import { changeGuitarsAmount, loadCommentsList, loadGuitarInfoError, loadGuitarInfoSuccess, loadGuitarsError, loadGuitarsSuccess, loadMinMaxPrices, loadSearchResultsSuccess, postingNewComment, postNewCommentSuccess, requestGuitarInfo, requestGuitars, setDiscount } from './action';
 import { NameSpace } from './root-reducer';
 
 const errorMessages = {
@@ -95,6 +95,26 @@ export const postNewComment = (newComment: NewComment): ThunkActionResult => (
     catch {
       toast.warn(errorMessages.postNewComment);
       dispatch(postingNewComment(false));
+    }
+  }
+);
+
+export const checkCoupon = (coupon: string): ThunkActionResult => (
+  async (dispatch, _, api) => {
+    try {
+      const {data} = await api.post(`${APIRoute.Coupons}`, {coupon: coupon});
+      dispatch(setDiscount({
+        isActive: true,
+        percent: data,
+        coupon: coupon,
+      }));
+    }
+    catch {
+      dispatch(setDiscount({
+        isActive: false,
+        percent: 0,
+        coupon: '',
+      }));
     }
   }
 );

@@ -5,15 +5,20 @@ import CardsList from './cards-list';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Screen } from '../../const';
-import { makeFakeGuitarsList } from '../../utils/mock';
+import { makeFakeGuitar, makeFakeGuitarsList } from '../../utils/mock';
 
 const mockGuitars = makeFakeGuitarsList();
+const mockGuitarInfo = makeFakeGuitar();
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 const store = mockStore({
   APP: {
     currentScreen: Screen.Catalog,
+    cart: [{
+      guitar: mockGuitarInfo,
+      amount: 1,
+    }],
   },
   GUITARS: {
     guitarsList: mockGuitars,
@@ -24,7 +29,7 @@ test('Renders cardsList-component', () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CardsList guitarsList={mockGuitars}/>
+        <CardsList guitarsList={mockGuitars} setGuitarForCart={jest.fn} setIsModalAddToCartActive={jest.fn}/>
       </Router>
     </Provider>,
   );

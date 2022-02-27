@@ -14,9 +14,12 @@ import { getGuitarsError, getGuitarsList, getGuitarsLoading } from '../../store/
 import queryString from 'query-string';
 import { History } from 'history';
 import { fetchDataAction } from '../../store/api-actions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createApiURL } from '../../utils/api';
 import { changeScreen } from '../../store/action';
+import WithPopupControls from '../../hocs/with-popup-controls';
+import ModalAddToCart from '../../components/modal-add-to-cart/modal-add-to-cart';
+import { Guitar } from '../../types/guitar';
 
 type ErrorPageProps = {
   history: History,
@@ -49,6 +52,9 @@ function Catalog({history} : CatalogProps): JSX.Element {
   const guitarsLoading = useSelector(getGuitarsLoading);
   const guitarsError = useSelector(getGuitarsError);
   const guitarsList = useSelector(getGuitarsList);
+
+  const [isModalAddToCartActive, setIsModalAddToCartActive] = useState(false);
+  const [guitarForCart, setGuitarForCart] = useState({} as Guitar);
 
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
@@ -87,7 +93,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
             <div className="catalog">
               <Filter history={history}/>
               <Sorting history={history}/>
-              {!guitarsLoading && <CardsList guitarsList={guitarsList}/>}
+              {!guitarsLoading && <CardsList guitarsList={guitarsList} setGuitarForCart={setGuitarForCart} setIsModalAddToCartActive={setIsModalAddToCartActive}/>}
               {guitarsLoading && <Loading/>}
               <Pagination currentPage={Number(page)}/>
             </div>
@@ -95,6 +101,16 @@ function Catalog({history} : CatalogProps): JSX.Element {
         </main>
         <Footer/>
       </div>
+      <WithPopupControls
+        isActive={isModalAddToCartActive}
+        setIsModalActive={setIsModalAddToCartActive}
+        modalClass={''}
+      >
+        <ModalAddToCart
+          setIsModalAddToCartActive={setIsModalAddToCartActive}
+          guitar={guitarForCart}
+        />
+      </WithPopupControls>
     </>
   );
 }

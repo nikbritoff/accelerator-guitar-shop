@@ -8,7 +8,7 @@ import IconsList from '../../components/icons-list/icons-list';
 import LoadingError from '../../components/loading-error/loading-error';
 import Loading from '../../components/loading/loading';
 import { AppRoute, CommentsListSettings, ratingValues, Screen } from '../../const';
-import { changeScreen, loadSearchResultsSuccess } from '../../store/action';
+import { addOrderItem, changeScreen, loadSearchResultsSuccess } from '../../store/action';
 import { fetchGuitarInfo, fetchGuitarInfoCommentsList } from '../../store/api-actions';
 import { getCommentsList, getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
 import { translateType } from '../../utils/guitar-info';
@@ -192,7 +192,14 @@ function Guitar({history}: GuitarProps): JSX.Element {
               <div className="product-container__price-wrapper">
                 <p className="product-container__price-info product-container__price-info--title">Цена:</p>
                 <p className="product-container__price-info product-container__price-info--value">{guitarInfo.price} ₽</p>
-                <a className="button button--red button--big product-container__button" href="/#">
+                <a
+                  className="button button--red button--big product-container__button"
+                  href="/#"
+                  onClick={(evt: MouseEvent<HTMLAnchorElement>) => {
+                    evt.preventDefault();
+                    dispatch(addOrderItem(guitarInfo));
+                  }}
+                >
                   Добавить в корзину
                 </a>
               </div>

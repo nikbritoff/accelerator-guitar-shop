@@ -14,7 +14,7 @@ type KeyboardEvent = {
   key: string,
 };
 
-function WithPopupControls({children, modalClass, isActive, setIsModalActive, checkElement = 'div'}: WithPopupControlsProps): JSX.Element {
+function WithPopupControls({children, modalClass = '', isActive, setIsModalActive, checkElement = 'div'}: WithPopupControlsProps): JSX.Element {
   const handleCloseButtonClick = (evt: MouseEvent<HTMLButtonElement>):void => {
     evt.preventDefault();
     setIsModalActive(false);
