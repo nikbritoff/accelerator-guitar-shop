@@ -105,7 +105,7 @@ function CartItem ({order: {guitar, amount}, setGuitarForRemoveFromCart, setIsMo
         <p className="product-info__info">Артикул: {vendorCode}</p>
         <p className="product-info__info">{translateType(type)}, {stringCount} струнная</p>
       </div>
-      <div className="cart-item__price">{price} ₽</div>
+      <div className="cart-item__price">{price.toLocaleString('ru')} ₽</div>
       <div className="quantity cart-item__quantity">
         <button
           className="quantity__button"
@@ -137,7 +137,7 @@ function CartItem ({order: {guitar, amount}, setGuitarForRemoveFromCart, setIsMo
           </svg>
         </button>
       </div>
-      <div className="cart-item__price-total">{price * amount} ₽</div>
+      <div className="cart-item__price-total">{(price * amount).toLocaleString('ru')} ₽</div>
     </div>
   );
 }

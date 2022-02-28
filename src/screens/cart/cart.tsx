@@ -13,6 +13,7 @@ import { changeScreen } from '../../store/action';
 import { checkCoupon } from '../../store/api-actions';
 import { getCart, getDiscount } from '../../store/app-state/selectors';
 import { Guitar } from '../../types/guitar';
+import cn from 'classnames';
 
 type CartProps = {
   history: History,
@@ -35,6 +36,9 @@ function Cart({history}: CartProps): JSX.Element {
   });
 
   const handleCouponInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+    if (evt.target.value.includes(' ')) {
+      return;
+    }
     setCoupon(evt.target.value);
   };
 
@@ -95,6 +99,9 @@ function Cart({history}: CartProps): JSX.Element {
                         onChange={handleCouponInputChange}
                       />
                       {discount.isActive && <p className="form-input__message form-input__message--success">Промокод принят</p>}
+                      {!discount.isActive
+                        && discount.coupon.length > 0
+                        && <p className="form-input__message form-input__message--error">Неверный промокод</p>}
                     </div>
                     <button className="button button--big coupon__button">Применить</button>
                   </form>
@@ -102,15 +109,24 @@ function Cart({history}: CartProps): JSX.Element {
                 <div className="cart__total-info">
                   <p className="cart__total-item">
                     <span className="cart__total-value-name">Всего:</span>
-                    <span className="cart__total-value">{totalPrice} ₽</span>
+                    <span className="cart__total-value">{totalPrice.toLocaleString('ru')} ₽</span>
                   </p>
                   <p className="cart__total-item">
                     <span className="cart__total-value-name">Скидка:</span>
-                    <span className="cart__total-value cart__total-value--bonus">{discount.isActive && totalPrice > 0 && '-'} {priceWithDiscount} ₽</span>
+                    <span
+                      className={cn(
+                        'cart__total-value',
+                        {'cart__total-value--bonus': discount.isActive},
+                      )}
+                    >
+                      {discount.isActive && totalPrice > 0 && '-'} {priceWithDiscount.toLocaleString('ru')} ₽
+                    </span>
                   </p>
                   <p className="cart__total-item">
                     <span className="cart__total-value-name">К оплате:</span>
-                    <span className="cart__total-value cart__total-value--payment">{totalPrice - priceWithDiscount} ₽</span>
+                    <span className="cart__total-value cart__total-value--payment">
+                      {(totalPrice - priceWithDiscount).toLocaleString('ru')} ₽
+                    </span>
                   </p>
                   <button className="button button--red button--big cart__order-button">Оформить заказ</button>
                 </div>

@@ -8,7 +8,7 @@ import IconsList from '../../components/icons-list/icons-list';
 import LoadingError from '../../components/loading-error/loading-error';
 import Loading from '../../components/loading/loading';
 import { AppRoute, CommentsListSettings, ratingValues, Screen } from '../../const';
-import { addOrderItem, changeScreen, loadSearchResultsSuccess } from '../../store/action';
+import { changeScreen, loadSearchResultsSuccess } from '../../store/action';
 import { fetchGuitarInfo, fetchGuitarInfoCommentsList } from '../../store/api-actions';
 import { getCommentsList, getGuitarInfo, getGuitarInfoError, getGuitarInfoLoading } from '../../store/guitar-info/selectors';
 import { translateType } from '../../utils/guitar-info';
@@ -18,6 +18,8 @@ import RatingStar from '../../components/rating-star/rating-star';
 import ReviewForm from '../../components/review-form/review-form';
 import WithPopupControls from '../../hocs/with-popup-controls';
 import ModalReviewSuccess from '../../components/modal-review-success/modal-review-success';
+import ModalAddToCart from '../../components/modal-add-to-cart/modal-add-to-cart';
+import ModalAddToCartSuccess from '../../components/modal-add-to-cart-success/modal-add-to-cart-success';
 
 type ErrorPageProps = {
   history: History,
@@ -59,6 +61,8 @@ function Guitar({history}: GuitarProps): JSX.Element {
   const [isReviewModalActive, setIsReviewModalActive] = useState(false);
   const [isModalReviewSuccessActive, setIsModalReviewSuccessActive] = useState(false);
   const [shownCommentsAmount, setShownCommentsAmount] = useState(commentsList.length >= CommentsListSettings.ShownStep ? CommentsListSettings.ShownStep : commentsList.length);
+  const [isModalAddToCartActive, setIsModalAddToCartActive] = useState(false);
+  const [isModalAddToCartSuccessActive, setIsModalAddToCartSuccessActive] = useState(false);
 
   const descriptionTabClickHandler = (evt: MouseEvent<HTMLAnchorElement>): void => {
     evt.preventDefault();
@@ -70,6 +74,11 @@ function Guitar({history}: GuitarProps): JSX.Element {
     evt.preventDefault();
     setIsDescriptionActive(!isDescriptionActive);
     setIsCharacteristicsActive(!isCharacteristicsActive);
+  };
+
+  const handleAddToCartClick = (evt: MouseEvent<HTMLAnchorElement>): void => {
+    evt.preventDefault();
+    setIsModalAddToCartActive(true);
   };
 
   useEffect(() => {
@@ -195,10 +204,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
                 <a
                   className="button button--red button--big product-container__button"
                   href="/#"
-                  onClick={(evt: MouseEvent<HTMLAnchorElement>) => {
-                    evt.preventDefault();
-                    dispatch(addOrderItem(guitarInfo));
-                  }}
+                  onClick={handleAddToCartClick}
                 >
                   Добавить в корзину
                 </a>
@@ -213,6 +219,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
           </div>
         </main>
         <Footer/>
+
         <WithPopupControls
           modalClass={'modal--review'}
           isActive={isReviewModalActive}
@@ -227,6 +234,7 @@ function Guitar({history}: GuitarProps): JSX.Element {
             shownCommentsAmount={shownCommentsAmount}
           />
         </WithPopupControls>
+
         <WithPopupControls
           modalClass={'modal--success'}
           isActive={isModalReviewSuccessActive}
@@ -234,6 +242,29 @@ function Guitar({history}: GuitarProps): JSX.Element {
         >
           <ModalReviewSuccess
             setIsModalReviewSuccessActive={setIsModalReviewSuccessActive}
+          />
+        </WithPopupControls>
+
+        <WithPopupControls
+          isActive={isModalAddToCartActive}
+          setIsModalActive={setIsModalAddToCartActive}
+          modalClass={''}
+        >
+          <ModalAddToCart
+            setIsModalAddToCartActive={setIsModalAddToCartActive}
+            setIsModalAddToCartSuccessActive={setIsModalAddToCartSuccessActive}
+            guitar={guitarInfo}
+          />
+        </WithPopupControls>
+
+        <WithPopupControls
+          isActive={isModalAddToCartSuccessActive}
+          setIsModalActive={setIsModalAddToCartSuccessActive}
+          modalClass={'modal--success'}
+        >
+          <ModalAddToCartSuccess
+            setIsModalAddToCartSuccessActive={setIsModalAddToCartSuccessActive}
+            history={history}
           />
         </WithPopupControls>
       </div>
