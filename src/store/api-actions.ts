@@ -113,7 +113,7 @@ export const checkCoupon = (coupon: string): ThunkActionResult => (
       dispatch(setDiscount({
         isActive: false,
         percent: 0,
-        coupon: '',
+        coupon: coupon,
       }));
     }
   }

@@ -20,6 +20,7 @@ import { changeScreen } from '../../store/action';
 import WithPopupControls from '../../hocs/with-popup-controls';
 import ModalAddToCart from '../../components/modal-add-to-cart/modal-add-to-cart';
 import { Guitar } from '../../types/guitar';
+import ModalAddToCartSuccess from '../../components/modal-add-to-cart-success/modal-add-to-cart-success';
 
 type ErrorPageProps = {
   history: History,
@@ -55,6 +56,7 @@ function Catalog({history} : CatalogProps): JSX.Element {
 
   const [isModalAddToCartActive, setIsModalAddToCartActive] = useState(false);
   const [guitarForCart, setGuitarForCart] = useState({} as Guitar);
+  const [isModalAddToCartSuccessActive, setIsModalAddToCartSuccessActive] = useState(false);
 
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
@@ -108,7 +110,19 @@ function Catalog({history} : CatalogProps): JSX.Element {
       >
         <ModalAddToCart
           setIsModalAddToCartActive={setIsModalAddToCartActive}
+          setIsModalAddToCartSuccessActive={setIsModalAddToCartSuccessActive}
           guitar={guitarForCart}
+        />
+      </WithPopupControls>
+
+      <WithPopupControls
+        isActive={isModalAddToCartSuccessActive}
+        setIsModalActive={setIsModalAddToCartSuccessActive}
+        modalClass={'modal--success'}
+      >
+        <ModalAddToCartSuccess
+          setIsModalAddToCartSuccessActive={setIsModalAddToCartSuccessActive}
+          history={history}
         />
       </WithPopupControls>
     </>

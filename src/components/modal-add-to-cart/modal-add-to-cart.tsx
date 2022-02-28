@@ -6,10 +6,11 @@ import { translateType } from '../../utils/guitar-info';
 
 type ModalAddToCartProps = {
   setIsModalAddToCartActive: (isActive: boolean) => void,
+  setIsModalAddToCartSuccessActive: (isActive: boolean) => void,
   guitar: Guitar,
 }
 
-function ModalAddToCart({setIsModalAddToCartActive, guitar}: ModalAddToCartProps) {
+function ModalAddToCart({setIsModalAddToCartActive, setIsModalAddToCartSuccessActive, guitar}: ModalAddToCartProps) {
   const {previewImg, name, vendorCode, type, stringCount, price} = guitar;
   const dispatch = useDispatch();
 
@@ -18,12 +19,13 @@ function ModalAddToCart({setIsModalAddToCartActive, guitar}: ModalAddToCartProps
 
     dispatch(addOrderItem(guitar));
     setIsModalAddToCartActive(false);
+    setIsModalAddToCartSuccessActive(true);
   };
   return (
     <>
       <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
       <div className="modal__info">
-        <img className="modal__img" src={previewImg} width="67" height="137" alt="Честер bass" />
+        <img className="modal__img" src={`/${previewImg}`} width="67" height="137" alt="Честер bass" />
         <div className="modal__info-wrapper">
           <h3 className="modal__product-name title title--little title--uppercase">{name}</h3>
           <p className="modal__product-params modal__product-params--margin-11">Артикул: {vendorCode}</p>
